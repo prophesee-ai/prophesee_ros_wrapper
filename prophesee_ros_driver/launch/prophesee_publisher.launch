@@ -1,0 +1,18 @@
+<launch>
+
+  <node pkg="prophesee_ros_driver" type="prophesee_ros_publisher" name="prophesee_ros_publisher" respawn="false" output="screen">
+    <param name="camera_name" value="camera" />
+    <param name="publish_cd" value="true" />
+    <param name="publish_graylevels" value="false" />
+
+    <!-- Path to the file with the camera settings -->
+    <param name="bias_file" value="" />
+
+    <!-- Maximum event rate in kEv/s -->
+    <param name="max_event_rate" value="6000" />
+
+    <!-- Graylevel frame rate in fps -->
+    <param name="graylevel_frame_rate" value="30" />
+  </node>
+
+</launch>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+  <name>prophesee_ros_wrapper</name>
+  <version>0.0.0</version>
+  <description>ROS wrapper for Prophesee event-based sensors</description>
+
+  <maintainer email="nlyubova@prophesee.ai">Natalia Lyubova</maintainer>
+  <author email="nlyubova@prophesee.ai">Natalia Lyubova</author>
+
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <export>
+    <metapackage/>
+  </export>
+
+  <run_depend>prophesee_driver_wrapper</run_depend>
+  <run_depend>prophesee_event_msgs</run_depend>
+
+</package>

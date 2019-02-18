@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>prophesee_ros_driver</name>
+  <version>0.0.0</version>
+  <description>Publisher and Viewer for Prophesee Event-Based Sensors</description>
+
+  <maintainer email="nlyubova@prophesee.ai">Natalia Lyubova</maintainer>
+  <author email="natalia.lyubova@prophesee.ai">Natalia Lyubova</author>
+  <author email="egor.makhov@mail.polimi.it">Egor Makhov</author>
+
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>prophesee_event_msgs</depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>roslaunch</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>cv_bridge</build_depend>
+  <build_depend>image_transport</build_depend>
+  <build_depend>prophesee_ros_msgs</build_depend>
+
+  <build_export_depend>roscpp</build_export_depend>
+  <build_export_depend>sensor_msgs</build_export_depend>
+
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>cv_bridge</exec_depend>
+  <exec_depend>image_transport</exec_depend>
+  <exec_depend>prophesee_ros_msgs</exec_depend>
+
+</package>
