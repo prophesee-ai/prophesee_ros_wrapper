@@ -1,9 +1,12 @@
 # Prophesee ROS Wrapper
 
-ROS driver and messages for Prophesee event-based sensors:
-  * prophesee_ros_driver - ROS wrapper for Prophesee driver, including
-    * prophesee_ros_publisher - publishes data from a sensor to ROS topics
-    * prophesee_ros_viewer - listens data from ROS topics and visualizes them
+![Event-based vision by Prophesee](event-based_vision_PROPHESEE.png)
+
+This metapackage contains ROS driver and messages for Prophesee event-based sensors.
+The following packages and nodes are provided:
+  * prophesee_ros_driver - ROS driver (a wrapper around Prophesee Driver), including
+    * prophesee_ros_publisher - publishing data from Prophesee sensor to ROS topics
+    * prophesee_ros_viewer - listening data from ROS topics and visualizing them on a screen
   * prophesee_event_msgs - Prophesee messages:
     * PropheseeEvent - contains an event from a Prophesee camera (uint16 x, uint16 y, bool p, int64 t)
     * PropheseeEventBuffer - contains a buffer of events (PropheseeEvent[] events)
@@ -12,8 +15,7 @@ Supported Prophesee EVK:
   * VGA-CD: PSEE300EVK, PEK3SVCD
   * HVGA-EM: PSEE350EVK, PEK3SHEM
   
-  
-  
+
 ## Installation
 
   * Install dependencies, such as Prophesee Driver SDK
