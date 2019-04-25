@@ -24,7 +24,7 @@ Supported Prophesee EVK:
         sudo apt install prophesee-*
     ```
 
-  * Clone the source to the catkin workspace ( (create a workspace)[http://wiki.ros.org/catkin/Tutorials/create_a_workspace], if needed)
+  * Clone the source to your catkin workspace ( [create a workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace), if needed)
 
     ```
         cd catkin_ws/src
