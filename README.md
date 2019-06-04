@@ -75,3 +75,7 @@ To visualize data from ROS topics:
         roslaunch prophesee_ros_driver prophesee_viewer.launch
   ```
 
+### Contact
+The code is open to contributions, so do not hesitate to ask questions, propose pull requests or create bug reports. 
+For any information contact us [here](https://www.prophesee.ai/contact-us/) 
+
