@@ -4,6 +4,7 @@
     <param name="camera_name" value="camera" />
     <param name="publish_cd" value="true" />
     <param name="publish_graylevels" value="false" />
+    <param name="publish_imu" value="true" />
 
     <!-- Path to the file with the camera settings -->
     <param name="bias_file" value="" />

@@ -10,6 +10,7 @@
 #include <std_msgs/String.h>
 #include <sensor_msgs/image_encodings.h>
 #include <cv_bridge/cv_bridge.h>
+#include <sensor_msgs/Imu.h>
 
 #include <prophesee_event_msgs/PropheseeEvent.h>
 #include <prophesee_event_msgs/PropheseeEventBuffer.h>
@@ -22,19 +23,21 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher():
     max_event_rate_(6000),
     graylevel_rate_(30)
 {
-    std::string camera_name("camera");
+    camera_name_ = "camera";
 
     // Load Parameters
-    nh_.getParam("camera_name", camera_name);
+    nh_.getParam("camera_name", camera_name_);
     nh_.getParam("publish_cd", publish_cd_);
     nh_.getParam("publish_graylevels", publish_graylevels_);
+    nh_.getParam("publish_imu", publish_imu_);
     nh_.getParam("bias_file", biases_file_);
     nh_.getParam("max_event_rate", max_event_rate_);
     nh_.getParam("graylevel_frame_rate", graylevel_rate_);
 
-    const std::string topic_cam_info = "/prophesee/" + camera_name + "/camera_info";
-    const std::string topic_cd_event_buffer = "/prophesee/" + camera_name + "/cd_events_buffer";
-    const std::string topic_gl_frame = "/prophesee/" + camera_name + "/graylevel_image";
+    const std::string topic_cam_info = "/prophesee/" + camera_name_ + "/camera_info";
+    const std::string topic_cd_event_buffer = "/prophesee/" + camera_name_ + "/cd_events_buffer";
+    const std::string topic_gl_frame = "/prophesee/" + camera_name_ + "/graylevel_image";
+    const std::string topic_imu_sensor = "/prophesee/" + camera_name_ + "/imu";
 
     pub_info_ = nh_.advertise<sensor_msgs::CameraInfo>(topic_cam_info, 1);
 
@@ -43,6 +46,9 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher():
 
     if (publish_graylevels_)
         pub_gl_frame_ = nh_.advertise<cv_bridge::CvImage>(topic_gl_frame, 1);
+
+    if (publish_imu_)
+        pub_imu_events_ = nh_.advertise<sensor_msgs::Imu>(topic_imu_sensor, 100);
 
     while (!openCamera()) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -86,6 +92,7 @@ bool PropheseeWrapperPublisher::openCamera() {
     try {
         camera_ = Prophesee::Camera::from_first_available();
         if (!biases_file_.empty()) {
+            ROS_INFO("[CONF] Loading bias file: %s", biases_file_.c_str());
             camera_.biases().set_from_file(biases_file_);
         }
         camera_is_opened = true;
@@ -97,12 +104,22 @@ bool PropheseeWrapperPublisher::openCamera() {
 
 void PropheseeWrapperPublisher::startPublishing() {
     camera_.start();
+    start_timestamp_ = ros::Time::now();
 
     if (publish_cd_)
         publishCDEvents();
 
     if (publish_graylevels_)
         publishGrayLevels();
+
+    if (publish_imu_)
+    {
+        /** We need to enable the IMU sensor **/
+        camera_.imu_sensor().enable();
+
+        /** The class method with the callback **/
+        publishIMUEvents();
+    }
 
     ros::Rate loop_rate(5);
     while(ros::ok()) {
@@ -178,6 +195,46 @@ void PropheseeWrapperPublisher::publishGrayLevels() {
             ROS_WARN("%s", e.what());
             publish_graylevels_ = false;
         }
+    }
+}
+
+void PropheseeWrapperPublisher::publishIMUEvents() {
+    // Initialize and publish a buffer of IMU events
+    try {
+        Prophesee::CallbackId imu_callback = camera_.imu().add_callback(
+            [this](const Prophesee::EventIMU *ev_begin, const Prophesee::EventIMU *ev_end) {
+                // Check the number of subscribers to the topic
+                if (pub_imu_events_.getNumSubscribers() <= 0)
+                    return;
+
+                if (ev_begin < ev_end)
+                {
+                    const unsigned int buffer_size = ev_end - ev_begin;
+
+                    for (auto it = ev_begin; it != ev_end; ++it)
+                    {
+                        /** Store data in IMU sensor **/
+                        sensor_msgs::Imu imu_sensor_msg;
+                        imu_sensor_msg.header.stamp.fromNSec(start_timestamp_.toNSec() + (it->t * 1000.00));
+                        imu_sensor_msg.header.frame_id = camera_name_;
+                        imu_sensor_msg.angular_velocity.x = it->gx; //IMU x-axis [rad/s]is pointing left
+                        imu_sensor_msg.angular_velocity.y = it->gy; //IMU y-axis [rad/s]is pointing up
+                        imu_sensor_msg.angular_velocity.z = it->gz; // IMU z-axis[rad/s] is pointing forward
+
+                        imu_sensor_msg.linear_acceleration.x = it->ax * GRAVITY; //IMU x-axis [m/s^2] is pointing left
+                        imu_sensor_msg.linear_acceleration.y = it->ay * GRAVITY; //IMU y-axis [m/s^2] is pointing up
+                        imu_sensor_msg.linear_acceleration.z = it->az * GRAVITY; //IMU z-axis[m/s^2] is pointing forward
+
+                        // Publish the message
+                        pub_imu_events_.publish(imu_sensor_msg);
+                    }
+
+                    ROS_DEBUG("IMU data available, buffer size: %d at time: %llu", buffer_size, ev_begin->t);
+                }
+            });
+    } catch (Prophesee::CameraException &e) {
+        ROS_WARN("%s", e.what());
+        publish_cd_ = false;
     }
 }
 
