@@ -15,8 +15,8 @@
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.h>
 
-#include <prophesee_event_msgs/PropheseeEvent.h>
-#include <prophesee_event_msgs/PropheseeEventBuffer.h>
+#include <prophesee_event_msgs/Event.h>
+#include <prophesee_event_msgs/EventArray.h>
 
 #include "cd_frame_generator.h"
 

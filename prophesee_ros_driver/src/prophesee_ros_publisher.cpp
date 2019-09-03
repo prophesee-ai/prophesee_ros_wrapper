@@ -12,8 +12,8 @@
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/Imu.h>
 
-#include <prophesee_event_msgs/PropheseeEvent.h>
-#include <prophesee_event_msgs/PropheseeEventBuffer.h>
+#include <prophesee_event_msgs/Event.h>
+#include <prophesee_event_msgs/EventArray.h>
 
 #include "prophesee_ros_publisher.h"
 
@@ -42,7 +42,7 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher():
     pub_info_ = nh_.advertise<sensor_msgs::CameraInfo>(topic_cam_info, 1);
 
     if (publish_cd_)
-        pub_cd_events_ = nh_.advertise<prophesee_event_msgs::PropheseeEventBuffer>(topic_cd_event_buffer, 500);
+        pub_cd_events_ = nh_.advertise<prophesee_event_msgs::EventArray>(topic_cd_event_buffer, 500);
 
     if (publish_graylevels_)
         pub_gl_frame_ = nh_.advertise<cv_bridge::CvImage>(topic_gl_frame, 1);
@@ -142,18 +142,25 @@ void PropheseeWrapperPublisher::publishCDEvents() {
 
                 if (ev_begin < ev_end) {
                     // Define the message for a buffer of CD events
-                    prophesee_event_msgs::PropheseeEventBuffer event_buffer_msg;
+                    prophesee_event_msgs::EventArray event_buffer_msg;
                     const unsigned int buffer_size = ev_end - ev_begin;
                     event_buffer_msg.events.resize(buffer_size);
+
+                    // Header Timestamp of the message
+                    event_buffer_msg.header.stamp.fromNSec(start_timestamp_.toNSec() + (ev_begin->t * 1000.00));
+
+                    // Sensor geometry in header of the message
+                    event_buffer_msg.height = camera_.geometry().height();
+                    event_buffer_msg.width = camera_.geometry().width();
 
                     // Add events to the message
                     auto buffer_it = event_buffer_msg.events.begin();
                     for (const Prophesee::EventCD *it = ev_begin; it != ev_end; ++it, ++buffer_it) {
-                        prophesee_event_msgs::PropheseeEvent &event = *buffer_it;
+                        prophesee_event_msgs::Event &event = *buffer_it;
                         event.x = it->x;
                         event.y = it->y;
-                        event.p = it->p;
-                        event.t = it->t;
+                        event.polarity = it->p;
+                        event.ts.fromNSec(start_timestamp_.toNSec() + (it->t * 1000.00));
                     }
 
                     // Publish the message
