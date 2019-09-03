@@ -38,6 +38,9 @@ private:
     /// \brief Publishes gray-level frames
     void publishGrayLevels();
 
+    /// \brief Publishes IMU events
+    void publishIMUEvents();
+
     /// \brief Node handler - the access point to communication with ROS
     ros::NodeHandle nh_;
 
@@ -49,6 +52,9 @@ private:
 
     /// \brief Publisher for gray-level frame
     ros::Publisher pub_gl_frame_;
+
+    /// \brief Publisher for IMU events
+    ros::Publisher pub_imu_events_;
 
     /// \brief Instance of Camera class
     ///
@@ -66,6 +72,12 @@ private:
     /// \brief Path to the file with the camera settings (biases)
     std::string biases_file_;
 
+    /// \brief Camera name in string format
+    std::string camera_name_;
+
+    /// \brief Camera string time
+    ros::Time start_timestamp_;
+
     /// \brief Maximum events rate, in kEv/s
     int max_event_rate_;
 
@@ -77,6 +89,11 @@ private:
 
     /// \brief If showing gray-level frames
     bool publish_graylevels_;
+
+   /// \brief If showing IMU events
+    bool publish_imu_;
+
+    static constexpr double GRAVITY = 9.81; /** Mean gravity value at Earth surface [m/s^2] **/
 };
 
 #endif /* PROPHESEE_ROS_PUBLISHER_H_ */
