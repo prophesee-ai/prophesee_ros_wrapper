@@ -4,7 +4,7 @@ project(prophesee_ros_driver)
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
 
-set(OpenCV_DIR /usr/local/share/OpenCV)
+set(OpenCV_DIR /usr/share/OpenCV)
 find_package(catkin REQUIRED COMPONENTS
         OpenCV
         roscpp
@@ -34,7 +34,6 @@ catkin_package(
 include_directories(
   include/${PROJECT_NAME}
   ${catkin_INCLUDE_DIRS}
-  ${PROPHESEE_DRIVER_INCLUDE_DIRS}
   ${OPENCV_INCLUDE_DIRS}
 )
 
@@ -47,7 +46,7 @@ add_executable(prophesee_ros_publisher
 target_link_libraries(
     prophesee_ros_publisher
     ${catkin_LIBRARIES}
-    ${PROPHESEE_DRIVER_LIBRARIES}
+    prophesee_driver
 )
 
 # Prophesee Viewer
@@ -60,5 +59,5 @@ add_executable(prophesee_ros_viewer
 target_link_libraries(
     prophesee_ros_viewer
     ${catkin_LIBRARIES}
-    ${PROPHESEE_DRIVER_LIBRARIES}
+    prophesee_driver
 )
