@@ -15,8 +15,8 @@
 
 #include <prophesee_driver.h>
 
-#include <prophesee_event_msgs/PropheseeEvent.h>
-#include <prophesee_event_msgs/PropheseeEventBuffer.h>
+#include <prophesee_event_msgs/Event.h>
+#include <prophesee_event_msgs/EventArray.h>
 
 /// \brief Utility class to display CD events
 class CDFrameGenerator {
@@ -35,7 +35,7 @@ public:
     /// \brief Adds the buffer of events to be displayed
     ///
     /// @param msg : event buffer message
-    void add_events(const prophesee_event_msgs::PropheseeEventBuffer::ConstPtr &msg);
+    void add_events(const prophesee_event_msgs::EventArray::ConstPtr &msg);
 
     /// \brief Sets the time interval to display events
     ///
@@ -66,7 +66,7 @@ public:
     /// \return the current frame
     const cv::Mat &get_current_frame();
 
-    /// \brief Gets the last event timestamp
+    /// \brief Gets the last event timestamp in us
     ///
     /// \return the last event timestamp
     const Prophesee::timestamp &get_last_event_timestamp() const;
@@ -76,6 +76,13 @@ public:
     /// \return ROS time of the last received event buffer
     const ros::Time &get_last_ros_timestamp() const;
 
+    /// \brief Converts ROS time into Prophesee timestamp
+    ///
+    /// \return Timestamp in microseconds
+    inline Prophesee::timestamp ros_timestamp_in_us(const ros::Time &ts) const {
+        return static_cast<Prophesee::timestamp>(ts.toNSec()/1000.00);
+    };
+
 private:
     // Generate a frame
     void generate();
@@ -83,7 +90,7 @@ private:
     // Number of pixels in an image
     size_t pix_count_ = 0;
 
-    // Vector of timestamps
+    // Vector of timestamps in us
     std::vector<Prophesee::timestamp> ts_history_;
 
     // Generated image
@@ -95,17 +102,17 @@ private:
     // Time interval to display events
     uint32_t display_accumulation_time_us_ = 5000;
 
-    // Last event timestamp
+    // Last event timestamp in us
     Prophesee::timestamp last_ts_ = 0, last_process_ts_ = 0;
 
     size_t min_events_to_process_                     = 10000;
     Prophesee::timestamp max_delay_before_processing_ = 5000;
 
     // Received events
-    std::vector<prophesee_event_msgs::PropheseeEvent> events_queue_front_;
+    std::vector<prophesee_event_msgs::Event> events_queue_front_;
 
     // Events to display
-    std::vector<prophesee_event_msgs::PropheseeEvent> events_queue_back_;
+    std::vector<prophesee_event_msgs::Event> events_queue_back_;
 
     std::mutex frame_show_mutex_;
     std::mutex processing_mutex_;

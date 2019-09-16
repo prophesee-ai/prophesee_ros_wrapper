@@ -25,13 +25,13 @@ void CDFrameGenerator::init(long width, long height) {
     initialized_ = true;
 }
 
-void CDFrameGenerator::add_events(const prophesee_event_msgs::PropheseeEventBuffer::ConstPtr &msgs) {
+void CDFrameGenerator::add_events(const prophesee_event_msgs::EventArray::ConstPtr &msgs) {
     bool should_process = false;
     {
         std::lock_guard<std::mutex> lock(processing_mutex_);
         if (std::begin(msgs->events) < std::end(msgs->events)) {
             events_queue_front_.insert(events_queue_front_.end(), std::begin(msgs->events), std::end(msgs->events));
-            last_ts_ = (std::end(msgs->events) - 1)->t;
+            last_ts_ = ros_timestamp_in_us((std::end(msgs->events) - 1)->ts);
         }
         if (events_queue_front_.size() >= min_events_to_process_ ||
             last_ts_ >= last_process_ts_ + max_delay_before_processing_) {
@@ -95,7 +95,7 @@ void CDFrameGenerator::generate() {
             std::unique_lock<std::mutex> lock(processing_mutex_);
             std::swap(events_queue_front_, events_queue_back_);
             if (!events_queue_back_.empty())
-                last_process_ts_ = events_queue_back_.back().t;
+                last_process_ts_ = ros_timestamp_in_us(events_queue_back_.back().ts);
             threshold_to_display = last_ts_ - display_accumulation_time_us_;
         }
 
@@ -104,11 +104,11 @@ void CDFrameGenerator::generate() {
 
         std::unique_lock<std::mutex> lock(frame_show_mutex_);
         for (auto it = events_queue_back_.rbegin(), it_end = events_queue_back_.rend();
-             it != it_end && it->t >= threshold_to_display; ++it) {
+             it != it_end && ros_timestamp_in_us(it->ts) >= threshold_to_display; ++it) {
             Prophesee::timestamp &p_ts = ts_history_[it->y * width_ + it->x];
-            if (p_ts < it->t) {
-                p_ts                             = it->t;
-                frame_.at<uint8_t>(it->y, it->x) = it->p ? 255 : 0;
+            if (p_ts < ros_timestamp_in_us(it->ts)) {
+                p_ts                             = ros_timestamp_in_us(it->ts);
+                frame_.at<uint8_t>(it->y, it->x) = it->polarity ? 255 : 0;
             }
         }
 
