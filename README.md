@@ -8,8 +8,8 @@ The following packages and nodes are provided:
     * prophesee_ros_publisher - publishing data from Prophesee sensor to ROS topics
     * prophesee_ros_viewer - listening data from ROS topics and visualizing them on a screen
   * prophesee_event_msgs - Prophesee messages:
-    * PropheseeEvent - contains an event from a Prophesee camera (uint16 x, uint16 y, bool p, int64 t)
-    * PropheseeEventBuffer - contains a buffer of events (PropheseeEvent[] events)
+    * Event - contains an event from a Prophesee camera (uint16 x, uint16 y, bool polarity, ros::Time ts)
+    * EventArray - contains a buffer of events (Event[] events)
 
 Supported Prophesee EVK:
   * VGA-CD: PSEE300EVK, PEK3SVCD
