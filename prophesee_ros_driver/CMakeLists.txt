@@ -4,7 +4,16 @@ project(prophesee_ros_driver)
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
 
-set(OpenCV_DIR /usr/share/OpenCV)
+
+execute_process(COMMAND lsb_release -cs OUTPUT_VARIABLE RELEASE_CODENAME OUTPUT_STRIP_TRAILING_WHITESPACE)
+if ("${RELEASE_CODENAME}" STREQUAL  "bionic")
+	message ("Ubuntu 18.04 found")
+	set(OpenCV_DIR /usr/share/OpenCV)
+elseif ("${RELEASE_CODENAME}" STREQUAL  "xenial")
+	message ("UBUNTU 16.04 found")
+	set(OpenCV_DIR /usr/local/share/OpenCV)
+endif ()
+
 find_package(catkin REQUIRED COMPONENTS
         OpenCV
         roscpp
