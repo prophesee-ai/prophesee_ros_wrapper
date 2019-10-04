@@ -28,7 +28,7 @@ Supported Prophesee EVK:
 
     ```
         cd catkin_ws/src
-        git clone git@github.com:prophesee-ai/prophesee_ros_wrapper.git
+        git clone https://github.com/prophesee-ai/prophesee_ros_wrapper.git
         cd ..
     ```
 
