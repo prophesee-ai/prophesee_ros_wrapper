@@ -14,7 +14,7 @@
     <metapackage/>
   </export>
 
-  <run_depend>prophesee_driver_wrapper</run_depend>
   <run_depend>prophesee_event_msgs</run_depend>
+  <run_depend>prophesee_ros_driver</run_depend>
 
 </package>
