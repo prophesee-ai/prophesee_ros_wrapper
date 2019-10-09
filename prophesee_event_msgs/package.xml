@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
     <name>prophesee_event_msgs</name>
-    <version>0.0.0</version>
+    <version>0.0.1</version>
     <description>Prophesee event-based camera message package</description>
 
     <maintainer email="nlyubova@prophesee.ai">Natalia Lyubova</maintainer>

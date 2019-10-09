@@ -2,8 +2,8 @@
 Changelog for package prophesee_event_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.1 (2019-10-09)
+------------------
 * Merge pull request #4 from uzh-rpg/master
   Event messages harmonization with existing event-based sensors within the ROS ecosystem
 * prophesee_event_msgs: correct comment in Event ros message.

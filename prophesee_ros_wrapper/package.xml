@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>prophesee_ros_wrapper</name>
-  <version>0.0.0</version>
+  <version>0.0.1</version>
   <description>ROS wrapper for Prophesee event-based sensors</description>
 
   <maintainer email="nlyubova@prophesee.ai">Natalia Lyubova</maintainer>
