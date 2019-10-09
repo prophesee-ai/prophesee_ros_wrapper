@@ -61,9 +61,10 @@ To publish data from a Prophesee camera to ROS topics:
   ```
 
 The following topics will be published:
-  * camera_info - info about the camera
-  * cd_events_buffer - buffer of CD (Change Detection) events
-  * graylevel_image - Gray-level frame reconstructed from EM and CD events
+  * /prophesee/camera/camera_info - info about the camera
+  * /prophesee/camera/cd_events_buffer - buffer of CD (Change Detection) events
+  * (optional) /prophesee/camera/graylevel_image - Gray-level frame reconstructed from EM and CD events
+  * /prophesee/camera/imu - IMU data
  
  
 
