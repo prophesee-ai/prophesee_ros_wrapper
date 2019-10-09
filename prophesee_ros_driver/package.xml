@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>prophesee_ros_driver</name>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <description>Publisher and Viewer for Prophesee Event-Based Sensors</description>
 
   <maintainer email="nlyubova@prophesee.ai">Natalia Lyubova</maintainer>
