@@ -2,6 +2,9 @@
 Changelog for package prophesee_ros_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.0.1 (2019-10-09)
 ------------------
 * Merge pull request #5 from a-tonda/hotfix/ubuntu_versions_compatibility

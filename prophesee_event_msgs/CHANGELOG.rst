@@ -2,6 +2,9 @@
 Changelog for package prophesee_event_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.0.1 (2019-10-09)
 ------------------
 * Merge pull request #4 from uzh-rpg/master
