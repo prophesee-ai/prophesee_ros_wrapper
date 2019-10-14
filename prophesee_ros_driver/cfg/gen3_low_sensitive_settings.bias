@@ -1,0 +1,29 @@
+% subsystem_ID 2415920387
+% system_ID 21
+300        %   bias_latchout_or_pu       %   v    
+100        %   bias_reqx_or_pu           %   v    
+1200       %   bias_req_pux              %   v    
+1300       %   bias_req_puy              %   v    
+500        %   bias_del_reqx_or          %   v    
+800        %   bias_sendreq_pdx          %   v    
+500        %   bias_sendreq_pdy          %   v    
+400        %   bias_del_ack_array        %   v    
+200        %   bias_del_timeout          %   v    
+400        %   bias_inv                  %   v    
+1500       %   bias_refr                 %   v    
+500        %   bias_clk                  %   v    
+1800       %   bias_hpf                  %   v    
+430        %   bias_tail                 %   i    
+230        %   bias_out                  %   i    
+370        %   bias_hyst                 %   i    
+1397       %   bias_vrefl                %   v    
+1700       %   bias_vrefh                %   v    
+1000       %   bias_cas                  %   v    
+191        %   bias_diff_off             %   v    
+439        %   bias_diff_on              %   v    
+300        %   bias_diff                 %   v    
+1720       %   bias_fo                   %   v    
+1500       %   bias_pr                   %   v    
+1500       %   bias_bulk                 %   v    
+1600       %   bias_overflow             %   v    
+200        %   bias_buf                  %   v    

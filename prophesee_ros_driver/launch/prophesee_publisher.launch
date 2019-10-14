@@ -7,13 +7,20 @@
     <param name="publish_imu" value="true" />
 
     <!-- Path to the file with the camera settings -->
-    <param name="bias_file" value="" />
+    <!--param name="bias_file" value="$(find prophesee_ros_driver)/cfg/gen3_low_sensitive_settings.bias" /-->
 
-    <!-- Maximum event rate in kEv/s -->
+    <!-- Maximum event rate in kEv/s. With 0 does not set any limit-->
     <param name="max_event_rate" value="6000" />
+
+    <!-- Streaming rate in Hz for the events array. By default is 64 microsendos or max 100 events in array -->
+    <param name="event_streaming_rate" value="30" />
 
     <!-- Graylevel frame rate in fps -->
     <param name="graylevel_frame_rate" value="30" />
+
+    <!-- Activity filter temporal depth in microseconds -->
+    <param name="activity_filter_temporal_depth" value="0" />
+
   </node>
 
 </launch>
