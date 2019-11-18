@@ -58,6 +58,17 @@ target_link_libraries(
     prophesee_driver
 )
 
+# Stereo Publisher
+add_executable(stereo_publisher
+    src/stereo_publisher.cpp
+    src/log_tone_mapper.cpp)
+
+target_link_libraries(
+    stereo_publisher
+    ${catkin_LIBRARIES}
+    prophesee_driver
+)
+
 # Prophesee Viewer
 add_executable(prophesee_ros_viewer
     src/prophesee_ros_viewer.cpp

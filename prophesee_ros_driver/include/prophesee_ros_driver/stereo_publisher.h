@@ -1,0 +1,4 @@
+#ifndef STEREO_PUBLISHER_H
+#define STEREO_PUBLISHER_H
+
+#endif // STEREO_PUBLISHER_H
