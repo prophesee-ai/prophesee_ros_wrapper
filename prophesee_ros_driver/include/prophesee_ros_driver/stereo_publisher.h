@@ -13,67 +13,96 @@
 
 #include "log_tone_mapper.h"
 
+#include "ros/ros.h"
+
 /// \brief Main class for ROS publisher
 ///
 /// Publishes data from Prophesee sensor to ROS topics
 class PropheseeWrapperStereoPublisher {
 public:
     /// \brief Constructor
-    PropheseeWrapperStereoPublisher();
+    PropheseeWrapperStereoPublisher();////TODO////
 
     /// \brief Destructor
-    ~PropheseeWrapperStereoPublisher();
+    ~PropheseeWrapperStereoPublisher();////TODO////
 
     /// \brief Starts the camera and starts publishing data
-    void startPublishing();
+    void startPublishing();////TODO////
 
 private:
 
-    /// \brief Opens the camera
-    bool openCamera();
+    ///
+    /// \brief Opens the camera that is being passed
+    /// \param camera_ reference to one of the camera object (left/right)
+    /// \return Returns if camera opening was successful
+    ///
+    bool openCamera(Prophesee::Camera & camera_);////TODO////
 
     /// \brief Publishes CD events
-    void publishCDEvents();
+    void publishCDEvents(Prophesee::Camera & camera, ros::Publisher & publisher);
 
     /// \brief Publishes gray-level frames
-    void publishGrayLevels();
+    void publishGrayLevels(Prophesee::Camera & camera, ros::Publisher & publisher);
 
     /// \brief Publishes IMU events
-    void publishIMUEvents();
+    void publishIMUEvents(Prophesee::Camera & camera, ros::Publisher & publisher);
 
     /// \brief Node handler - the access point to communication with ROS
-    ros::NodeHandle nh_;
+    ros::NodeHandle nh_;////TODO////
 
     /// \brief Publisher for camera info
-    ros::Publisher pub_info_;
+    ros::Publisher pub_info_left;
+    ros::Publisher pub_info_right;
 
     /// \brief Publisher for CD events
-    ros::Publisher pub_cd_events_;
+    ros::Publisher pub_cd_events_left;
+    ros::Publisher pub_cd_events_right;
 
     /// \brief Publisher for gray-level frame
-    ros::Publisher pub_gl_frame_;
+    ros::Publisher pub_gl_frame_left;
+    ros::Publisher pub_gl_frame_right;
 
     /// \brief Publisher for IMU events
-    ros::Publisher pub_imu_events_;
+    ros::Publisher pub_imu_events_left;
+    ros::Publisher pub_imu_events_right;
 
-    /// \brief Instance of Camera class
+    /// \brief Instance of Camera class for left camera
     ///
-    /// Used to access data from a camera
-    Prophesee::Camera camera_;
+    /// Used to access data from the left camera. Serial
+    /// numer to left/right are taken from ros parameter
+    /// space
+    Prophesee::Camera camera_left;
+
+    /// \brief Instance of Camera class for right camera
+    ///
+    /// Used to access data from the right camera. Serial
+    /// numer to left/right are taken from ros parameter
+    /// space
+    Prophesee::Camera camera_right;
 
     /// \brief Instance of LogToneMapper class
     ///
     /// Used to reconstract gray-levels from CD and EM data and apply tone mapping
-    LogToneMapper tone_mapper_;
+    LogToneMapper tone_mapper_;////TODO////
 
     /// \brief Message for publishing the camera info
-    sensor_msgs::CameraInfo cam_info_msg_;
+    sensor_msgs::CameraInfo cam_info_msg_left;
+    sensor_msgs::CameraInfo cam_info_msg_right;
 
     /// \brief Path to the file with the camera settings (biases)
-    std::string biases_file_;
+    std::string biases_file_;////TODO////
 
-    /// \brief Camera name in string format
-    std::string camera_name_;
+    /// \brief left camera name in string format
+    std::string camera_name_left;
+
+    /// \brief Left camera serial in string format
+    std::string left_camera_id;
+
+    /// \brief right camera name in string format
+    std::string camera_name_right;
+
+    /// \brief Right camera serial in string format
+    std::string right_camera_id;
 
     /// \brief Camera string time
     ros::Time start_timestamp_;
@@ -83,6 +112,8 @@ private:
 
     /// \brief Grey-level rate, in fps
     int graylevel_rate_;
+
+    bool master_left_;
 
     /// \brief If showing CD events
     bool publish_cd_;
