@@ -97,7 +97,7 @@ PropheseeWrapperStereoPublisher::PropheseeWrapperStereoPublisher():
   ROS_INFO("[CONF] Serial number: %s", config.serial_number.c_str());
 
   config = camera_right.get_camera_configuration();
-  ROS_INFO("[CONF] INFORMATION ON LEFT CAMERA");
+  ROS_INFO("[CONF] INFORMATION ON RIGHT CAMERA");
   ROS_INFO("[CONF] Width:%i, Height:%i", camera_right.geometry().width(), camera_right.geometry().height());
   ROS_INFO("[CONF] Max event rate, in kEv/s: %u", config.max_drop_rate_limit_kEv_s);
   ROS_INFO("[CONF] Serial number: %s", config.serial_number.c_str());
@@ -126,8 +126,10 @@ bool PropheseeWrapperStereoPublisher::openCamera(Prophesee::Camera & camera_) {
   try {
     if(&camera_==&camera_left){
       camera_ = Prophesee::Camera::from_serial(left_camera_id);
+      ROS_INFO("Left camera was opened successfully");
     } else if (&camera_==&camera_right) {
       camera_ = Prophesee::Camera::from_serial(right_camera_id);
+      ROS_INFO("Right Camera was opened successfully");
     } else {
       ROS_WARN("Invalid camera Reference in call to PropheseeWrapperStereoPublisher::openCamera");
     }
@@ -152,6 +154,7 @@ void PropheseeWrapperStereoPublisher::startPublishing() {
   }
 
   start_timestamp_ = ros::Time::now();
+  ROS_INFO("Timestamp is %d seconds and %d nanoseconds",start_timestamp_.sec,start_timestamp_.nsec);
 
   if (publish_cd_){
     publishCDEvents(camera_left, pub_cd_events_left);
@@ -201,7 +204,7 @@ void PropheseeWrapperStereoPublisher::publishCDEvents(Prophesee::Camera & camera
         event_buffer_msg.events.resize(buffer_size);
 
         // Header Timestamp of the message
-        event_buffer_msg.header.stamp.fromNSec(start_timestamp_.toNSec() + (ev_begin->t * 1000.00));
+        event_buffer_msg.header.stamp.fromNSec(-start_timestamp_.toNSec() + (ev_begin->t * 1000.00));
 
         // Sensor geometry in header of the message
         event_buffer_msg.height = unsigned(camera.geometry().height());
@@ -210,11 +213,12 @@ void PropheseeWrapperStereoPublisher::publishCDEvents(Prophesee::Camera & camera
         // Add events to the message
         auto buffer_it = event_buffer_msg.events.begin();
         for (const Prophesee::EventCD *it = ev_begin; it != ev_end; ++it, ++buffer_it) {
+          std::cerr<<"t: "<<it->t<<'\n';
           prophesee_event_msgs::Event &event = *buffer_it;
           event.x = it->x;
           event.y = it->y;
           event.polarity = it->p;
-          event.ts.fromNSec(start_timestamp_.toNSec() + (it->t * 1000.00));
+          event.ts.fromNSec(-start_timestamp_.toNSec() + (it->t * 1000.00));
         }
 
         // Publish the message

@@ -1,12 +1,13 @@
 <launch>
 
-<node pkg="prophesee_ros_driver" type="prophesee_ros_publisher" name="prophesee_ros_publisher" respawn="false" output="screen">
+<node pkg="prophesee_ros_driver" type="stereo_publisher" name="stereo_publisher" respawn="false" output="screen">
   <param name="camera_name" value="camera" />
   <param name="left_camera_id" value="00002400" />
   <param name="right_camera_id" value="00002402" />
+  <param name="master_left" value="true" />
   <param name="publish_cd" value="true" />
   <param name="publish_graylevels" value="false" />
-  <param name="publish_imu" value="true" />
+  <param name="publish_imu" value="false" />
 
   <!-- Path to the file with the camera settings -->
   <param name="bias_file" value="" />
