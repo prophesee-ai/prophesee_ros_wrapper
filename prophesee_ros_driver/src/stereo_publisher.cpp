@@ -119,23 +119,23 @@ PropheseeWrapperStereoPublisher::~PropheseeWrapperStereoPublisher() {
   nh_.shutdown();
 }
 
-bool PropheseeWrapperStereoPublisher::openCamera(Prophesee::Camera & camera_) {
+bool PropheseeWrapperStereoPublisher::openCamera(Prophesee::Camera & camera) {
   bool camera_is_opened = false;
 
   // Initialize the camera instance
   try {
-    if(&camera_==&camera_left){
-      camera_ = Prophesee::Camera::from_serial(left_camera_id);
+    if(&camera==&camera_left){
+      camera = Prophesee::Camera::from_serial(left_camera_id);
       ROS_INFO("Left camera was opened successfully");
-    } else if (&camera_==&camera_right) {
-      camera_ = Prophesee::Camera::from_serial(right_camera_id);
+    } else if (&camera==&camera_right) {
+      camera = Prophesee::Camera::from_serial(right_camera_id);
       ROS_INFO("Right Camera was opened successfully");
     } else {
       ROS_WARN("Invalid camera Reference in call to PropheseeWrapperStereoPublisher::openCamera");
     }
     if (!biases_file_.empty()) {
       ROS_INFO("[CONF] Loading bias file: %s", biases_file_.c_str());
-      camera_.biases().set_from_file(biases_file_);
+      camera.biases().set_from_file(biases_file_);
     }
     camera_is_opened = true;
   } catch (Prophesee::CameraException &e) {
