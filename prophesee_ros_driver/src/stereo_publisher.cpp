@@ -173,8 +173,8 @@ void PropheseeWrapperStereoPublisher::startPublishing() {
     camera_right.imu_sensor().enable();
 
     /** The class method with the callback **/
-    publishIMUEvents(camera_left, pub_imu_events_left);
-    publishIMUEvents(camera_right, pub_imu_events_right);
+    publishIMUEvents(camera_left, pub_imu_events_left,"left");
+    publishIMUEvents(camera_right, pub_imu_events_right,"right");
   }
 
   ros::Rate loop_rate(5);
@@ -204,7 +204,7 @@ void PropheseeWrapperStereoPublisher::publishCDEvents(Prophesee::Camera & camera
         event_buffer_msg.events.resize(buffer_size);
 
         // Header Timestamp of the message
-        event_buffer_msg.header.stamp.fromNSec(-start_timestamp_.toNSec() + (ev_begin->t * 1000.00));
+        event_buffer_msg.header.stamp.fromNSec(start_timestamp_.toNSec() + (ev_begin->t * 1000.00));
 
         // Sensor geometry in header of the message
         event_buffer_msg.height = unsigned(camera.geometry().height());
@@ -213,12 +213,11 @@ void PropheseeWrapperStereoPublisher::publishCDEvents(Prophesee::Camera & camera
         // Add events to the message
         auto buffer_it = event_buffer_msg.events.begin();
         for (const Prophesee::EventCD *it = ev_begin; it != ev_end; ++it, ++buffer_it) {
-          std::cerr<<"t: "<<it->t<<'\n';
           prophesee_event_msgs::Event &event = *buffer_it;
           event.x = it->x;
           event.y = it->y;
           event.polarity = it->p;
-          event.ts.fromNSec(-start_timestamp_.toNSec() + (it->t * 1000.00));
+          event.ts.fromNSec(start_timestamp_.toNSec() + (it->t * 1000.00));
         }
 
         // Publish the message
@@ -265,11 +264,11 @@ void PropheseeWrapperStereoPublisher::publishGrayLevels(Prophesee::Camera & came
   }
 }
 
-void PropheseeWrapperStereoPublisher::publishIMUEvents(Prophesee::Camera &camera, ros::Publisher &publisher) {
+void PropheseeWrapperStereoPublisher::publishIMUEvents(Prophesee::Camera &camera, ros::Publisher &publisher, const std::string camPos) {
   // Initialize and publish a buffer of IMU events
   try {
     [[gnu::unused]] Prophesee::CallbackId imu_callback = camera.imu().add_callback(
-          [this,&publisher](const Prophesee::EventIMU *ev_begin, const Prophesee::EventIMU *ev_end) {
+          [this,&publisher,camPos](const Prophesee::EventIMU *ev_begin, const Prophesee::EventIMU *ev_end) {
       // Check the number of subscribers to the topic
       if (publisher.getNumSubscribers() <= 0)
         return;
@@ -283,7 +282,7 @@ void PropheseeWrapperStereoPublisher::publishIMUEvents(Prophesee::Camera &camera
           /** Store data in IMU sensor **/
           sensor_msgs::Imu imu_sensor_msg;
           imu_sensor_msg.header.stamp.fromNSec(start_timestamp_.toNSec() + (it->t * 1000.00));
-          imu_sensor_msg.header.frame_id = "unknown";
+          imu_sensor_msg.header.frame_id = "camera_"+camPos;
           imu_sensor_msg.angular_velocity.x = double(it->gx); //IMU x-axis [rad/s]is pointing left
           imu_sensor_msg.angular_velocity.y = double(it->gy); //IMU y-axis [rad/s]is pointing up
           imu_sensor_msg.angular_velocity.z = double(it->gz); // IMU z-axis[rad/s] is pointing forward

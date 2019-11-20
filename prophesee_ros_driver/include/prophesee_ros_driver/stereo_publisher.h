@@ -45,7 +45,7 @@ private:
     void publishGrayLevels(Prophesee::Camera & camera, ros::Publisher & publisher);
 
     /// \brief Publishes IMU events
-    void publishIMUEvents(Prophesee::Camera & camera, ros::Publisher & publisher);
+    void publishIMUEvents(Prophesee::Camera & camera, ros::Publisher & publisher, const std::string camPos);
 
     /// \brief Node handler - the access point to communication with ROS
     ros::NodeHandle nh_;////TODO////
