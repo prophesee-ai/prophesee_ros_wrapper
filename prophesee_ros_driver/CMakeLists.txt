@@ -21,6 +21,8 @@ find_package(catkin REQUIRED COMPONENTS
         cv_bridge
         image_transport
         prophesee_event_msgs
+        genmsg
+        message_generation
 )
 
 find_package(prophesee_driver REQUIRED)
@@ -58,6 +60,12 @@ target_link_libraries(
     prophesee_driver
 )
 
+add_dependencies(
+    prophesee_ros_publisher
+    prophesee_event_msgs_generate_messages_cpp
+    ${catkin_EXPORTED_TARGETS}
+    )
+
 # Stereo Publisher
 add_executable(stereo_publisher
     src/stereo_publisher.cpp
@@ -68,6 +76,12 @@ target_link_libraries(
     ${catkin_LIBRARIES}
     prophesee_driver
 )
+
+add_dependencies(
+    stereo_publisher
+    prophesee_event_msgs_generate_messages_cpp
+    ${catkin_EXPORTED_TARGETS}
+    )
 
 # Prophesee Viewer
 add_executable(prophesee_ros_viewer
@@ -81,3 +95,9 @@ target_link_libraries(
     ${catkin_LIBRARIES}
     prophesee_driver
 )
+
+add_dependencies(
+    prophesee_ros_viewer
+    prophesee_event_msgs_generate_messages_cpp
+    ${catkin_EXPORTED_TARGETS}
+    )
