@@ -21,10 +21,10 @@
 class PropheseeWrapperStereoPublisher {
 public:
     /// \brief Constructor
-    PropheseeWrapperStereoPublisher();////TODO////
+    PropheseeWrapperStereoPublisher();
 
     /// \brief Destructor
-    ~PropheseeWrapperStereoPublisher();////TODO////
+    ~PropheseeWrapperStereoPublisher();
 
     /// \brief Starts the camera and starts publishing data
     void startPublishing();////TODO////
@@ -36,7 +36,7 @@ private:
     /// \param camera_ reference to one of the camera object (left/right)
     /// \return Returns if camera opening was successful
     ///
-    bool openCamera(Prophesee::Camera & camera_);////TODO////
+    bool openCamera(Prophesee::Camera & camera_);
 
     /// \brief Publishes CD events
     void publishCDEvents(Prophesee::Camera & camera, ros::Publisher & publisher);
@@ -48,7 +48,7 @@ private:
     void publishIMUEvents(Prophesee::Camera & camera, ros::Publisher & publisher, const std::string camPos);
 
     /// \brief Node handler - the access point to communication with ROS
-    ros::NodeHandle nh_;////TODO////
+    ros::NodeHandle nh_;
 
     /// \brief Publisher for camera info
     ros::Publisher pub_info_left;
@@ -83,14 +83,14 @@ private:
     /// \brief Instance of LogToneMapper class
     ///
     /// Used to reconstract gray-levels from CD and EM data and apply tone mapping
-    LogToneMapper tone_mapper_;////TODO////
+    LogToneMapper tone_mapper_;
 
     /// \brief Message for publishing the camera info
     sensor_msgs::CameraInfo cam_info_msg_left;
     sensor_msgs::CameraInfo cam_info_msg_right;
 
     /// \brief Path to the file with the camera settings (biases)
-    std::string biases_file_;////TODO////
+    std::string biases_file_;
 
     /// \brief left camera name in string format
     std::string camera_name_left;
