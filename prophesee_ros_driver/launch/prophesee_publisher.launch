@@ -19,7 +19,7 @@
     <param name="graylevel_frame_rate" value="30" />
 
     <!-- Activity filter temporal depth in microseconds -->
-    <param name="activity_filter_temporal_depth" value="0" />
+    <!--param name="activity_filter_temporal_depth" value="10000" /-->
 
   </node>
 

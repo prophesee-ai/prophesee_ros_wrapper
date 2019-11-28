@@ -25,7 +25,7 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher():
     max_event_rate_(6000),
     graylevel_rate_(30),
     event_streaming_rate_(0),
-    activity_filter_temporal_depth_(10000)
+    activity_filter_temporal_depth_(0)
 {
     camera_name_ = "PropheseeCamera_optical_frame";
 
@@ -67,14 +67,12 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher():
     if (!camera_.set_max_event_rate_limit(max_event_rate_)) {
          ROS_WARN("Failed to set the maximum event rate");
     }
-    
+
     /** Read the current stream rate of events **/
-    if (this->event_streaming_rate_ > 0)
-    {
+    if (this->event_streaming_rate_ > 0) {
         this->event_delta_t_.fromNSec(1e09/this->event_streaming_rate_);
     }
-    else
-    {
+    else {
         this->event_delta_t_.fromSec(EVENT_DEFAULT_DELTA_T);
         this->event_streaming_rate_ = 1.0/this->event_delta_t_.toSec();
         nh_.setParam("event_streaming_rate", this->event_streaming_rate_);
@@ -99,9 +97,11 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher():
     cam_info_msg_.header.frame_id = "PropheseeCamera_optical_frame";
 
     // Set the activity filter instance
+    if (activity_filter_temporal_depth_ > 0) {
     activity_filter_.reset(new Prophesee::ActivityNoiseFilterAlgorithm<>(camera_.geometry().width(),
                                                                  camera_.geometry().height(),
                                                                  activity_filter_temporal_depth_));
+    }
 }
 
 PropheseeWrapperPublisher::~PropheseeWrapperPublisher() {
@@ -140,7 +140,7 @@ void PropheseeWrapperPublisher::startPublishing() {
     if (publish_graylevels_)
         publishGrayLevels();
 
-    if (publish_imu_){
+    if (publish_imu_) {
         /** We need to enable the IMU sensor **/
         camera_.imu_sensor().enable();
 
@@ -149,7 +149,7 @@ void PropheseeWrapperPublisher::startPublishing() {
     }
 
     ros::Rate loop_rate(5);
-    while(ros::ok()){
+    while(ros::ok()) {
         /** Get the current max_event_rate (dynamic configuration) **/
         int new_max_event_rate; 
         nh_.getParam("max_event_rate", new_max_event_rate);
@@ -192,7 +192,7 @@ void PropheseeWrapperPublisher::publishCDEvents() {
                 if (pub_cd_events_.getNumSubscribers() <= 0)
                     return;
 
-                if (ev_begin < ev_end){
+                if (ev_begin < ev_end) {
                     // Compute the current local buffer size with new CD events
                     const unsigned int buffer_size = ev_end - ev_begin;
 
