@@ -1,0 +1,21 @@
+<launch>
+
+  <node pkg="prophesee_ros_driver" type="prophesee_ros_viewer" name="prophesee_ros_viewer" respawn="false" output="screen">
+    <param name="camera_name" value="camera/left" />
+    <param name="show_cd" value="true" />
+    <param name="show_graylevels" value="false" />
+
+    <!-- Time interval to display events up to the current time, in us -->
+    <param name="display_accumulation_time" value="10000" />
+  </node>
+
+  <node pkg="prophesee_ros_driver" type="prophesee_ros_viewer" name="prophesee_ros_viewer_right" respawn="false" output="screen">
+    <param name="camera_name" value="camera/right" />
+    <param name="show_cd" value="true" />
+    <param name="show_graylevels" value="false" />
+
+    <!-- Time interval to display events up to the current time, in us -->
+    <param name="display_accumulation_time" value="10000" />
+  </node>
+
+</launch>
