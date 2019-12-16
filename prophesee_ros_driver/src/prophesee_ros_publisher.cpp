@@ -31,9 +31,11 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher():
 
     // Load Parameters
     nh_.getParam("camera_name", camera_name_);
+    nh_.getParam("serial", serial_);
     nh_.getParam("publish_cd", publish_cd_);
     nh_.getParam("publish_graylevels", publish_graylevels_);
     nh_.getParam("publish_imu", publish_imu_);
+    nh_.getParam("publish_extTrigger", publish_extTrigger_);
     nh_.getParam("bias_file", biases_file_);
     nh_.getParam("max_event_rate", max_event_rate_);
     nh_.getParam("graylevel_frame_rate", graylevel_rate_);
@@ -44,6 +46,7 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher():
     const std::string topic_cd_event_buffer = "/prophesee/" + camera_name_ + "/cd_events_buffer";
     const std::string topic_gl_frame = "/prophesee/" + camera_name_ + "/graylevel_image";
     const std::string topic_imu_sensor = "/prophesee/" + camera_name_ + "/imu";
+    const std::string topic_ext_trigger = "/prophesee/" + camera_name_ + "/extTrigger";
 
     pub_info_ = nh_.advertise<sensor_msgs::CameraInfo>(topic_cam_info, 1);
 
@@ -56,7 +59,10 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher():
     if (publish_imu_)
         pub_imu_events_ = nh_.advertise<sensor_msgs::Imu>(topic_imu_sensor, 100);
 
-    while (!openCamera()) {
+    if (publish_extTrigger_)
+        pub_extTrigger_ = nh_.advertise<prophesee_event_msgs::Event>(topic_ext_trigger,1);
+
+    while (!openCamera(serial_)) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
         ROS_INFO("Trying to open camera...");
     }
@@ -112,12 +118,19 @@ PropheseeWrapperPublisher::~PropheseeWrapperPublisher() {
     activity_filter_.reset();
 }
 
-bool PropheseeWrapperPublisher::openCamera() {
+bool PropheseeWrapperPublisher::openCamera(std::string serial = "") {
     bool camera_is_opened = false;
-
+    
     // Initialize the camera instance
     try {
-        camera_ = Prophesee::Camera::from_first_available();
+        if (serial == "")
+        {
+            camera_ = Prophesee::Camera::from_first_available();
+        }
+        else
+        {
+            camera_ = Prophesee::Camera::from_serial(serial);
+        }       
         if (!biases_file_.empty()) {
             ROS_INFO("[CONF] Loading bias file: %s", biases_file_.c_str());
             camera_.biases().set_from_file(biases_file_);
@@ -147,6 +160,8 @@ void PropheseeWrapperPublisher::startPublishing() {
         /** The class method with the callback **/
         publishIMUEvents();
     }
+    if (publish_extTrigger_)
+        publishExtTrigger();
 
     ros::Rate loop_rate(5);
     while(ros::ok()) {
@@ -327,6 +342,37 @@ void PropheseeWrapperPublisher::publishIMUEvents() {
         publish_cd_ = false;
     }
 }
+
+void PropheseeWrapperPublisher::publishExtTrigger() {
+    
+    try {
+        Prophesee::CallbackId imu_callback = camera_.ext_trigger().add_callback(
+            [this](const Prophesee::EventExtTrigger *ext_begin, const Prophesee::EventExtTrigger *ext_end)
+            {
+				//std::cout<<"TRIGGER EXT: "<<ext_begin[0]<<std::endl;  
+				//ROS_INFO("[CONF] TRIGGER!!!!");    
+                while(ext_begin < ext_end) {
+                    //std::cout << "Trigger in has been received " << ext_begin->p << " at " << ext_begin->t << std::endl;
+                    
+                    prophesee_event_msgs::Event event;
+                    event.polarity = ext_begin->p;
+                    event.ts.fromNSec(start_timestamp_.toNSec() + (ext_begin->t * 1000.00));
+                    pub_extTrigger_.publish(event);
+
+                    ++ext_begin;
+                    }  
+            // DEFINE MESSAGE
+            //std_msgs::Bool test;
+            //test.data = 1;
+            //pub_extTrigger_.publish(test);
+            
+            });
+    } catch (Prophesee::CameraException &e) {
+        ROS_WARN("%s", e.what());
+        publish_cd_ = false;
+    }
+}
+
 
 int main(int argc, char **argv) {
     ros::init(argc, argv, "prophesee_ros_publisher");
