@@ -71,8 +71,7 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher():
     /** Read the current stream rate of events **/
     if (this->event_streaming_rate_ > 0) {
         this->event_delta_t_.fromNSec(1e09/this->event_streaming_rate_);
-    }
-    else {
+    } else {
         this->event_delta_t_.fromSec(EVENT_DEFAULT_DELTA_T);
         this->event_streaming_rate_ = 1.0/this->event_delta_t_.toSec();
         nh_.setParam("event_streaming_rate", this->event_streaming_rate_);
@@ -153,29 +152,28 @@ void PropheseeWrapperPublisher::startPublishing() {
         /** Get the current max_event_rate (dynamic configuration) **/
         int new_max_event_rate; 
         nh_.getParam("max_event_rate", new_max_event_rate);
-        if (new_max_event_rate != max_event_rate_){
+        if (new_max_event_rate != max_event_rate_) {
             /** Save the new max event rate **/
             max_event_rate_ = new_max_event_rate;
 
             // Set the maximum event rate, in kEv/s
-            if (!camera_.set_max_event_rate_limit(max_event_rate_)){
+            if (!camera_.set_max_event_rate_limit(max_event_rate_)) {
                 ROS_WARN("Failed to set the maximum event rate");
             }
         }
 
         /** Get the current stream rate of events (dynamic configuration) **/
         nh_.getParam("event_streaming_rate", event_streaming_rate_);
-        if (this->event_streaming_rate_ > 0){
+        if (this->event_streaming_rate_ > 0) {
             this->event_delta_t_.fromNSec(1e09/this->event_streaming_rate_);
-        }
-        else{
-            this->event_delta_t_.fromSec(EVENT_DEFAULT_DELTA_T);
+        } else {
+            this->event_delta_t_.fromSec(this->EVENT_DEFAULT_DELTA_T);
             this->event_streaming_rate_ = 1.0/this->event_delta_t_.toSec();
             nh_.setParam("event_streaming_rate", this->event_streaming_rate_);
         }
 
-        if (pub_info_.getNumSubscribers() > 0){
-            /** Get and publish camera infor **/
+        if (pub_info_.getNumSubscribers() > 0) {
+            /** Get and publish camera info **/
             cam_info_msg_.header.stamp = ros::Time::now();
             pub_info_.publish(cam_info_msg_);
         }
@@ -200,22 +198,27 @@ void PropheseeWrapperPublisher::publishCDEvents() {
                     event_buffer_current_time_.fromNSec(start_timestamp_.toNSec() + (ev_begin->t * 1000.00));
 
                     /** In case the buffer is empty we set the starting time stamp **/
-                    if (event_buffer_.empty()){
+                    if (event_buffer_.empty()) {
                         // Get starting time
                         event_buffer_start_time_ = event_buffer_current_time_;
                     }
 
-                    if (activity_filter_temporal_depth_ > 0){
-                        /** Insert the events to the buffer **/
-                        auto inserter = std::back_inserter(event_buffer_);
+                    /** Insert the events to the buffer **/
+                    auto inserter = std::back_inserter(event_buffer_);
+
+                    if (activity_filter_temporal_depth_ > 0) {
+                        /** When there is activity filter **/
                         activity_filter_->process_output(ev_begin, ev_end, inserter);
+                    } else {
+                        /** When there is not activity filter **/
+                        std::copy(ev_begin, ev_end, inserter); 
                     }
 
                     /** Get the last time stamp **/
                     event_buffer_current_time_.fromNSec(start_timestamp_.toNSec() + (ev_end-1)->t * 1000.00);
                 }
 
-                if ((event_buffer_current_time_ - event_buffer_start_time_) >= event_delta_t_){
+                if ((event_buffer_current_time_ - event_buffer_start_time_) >= event_delta_t_) {
                     /** Create the message **/
                     prophesee_event_msgs::EventArray event_buffer_msg;
 
@@ -243,7 +246,7 @@ void PropheseeWrapperPublisher::publishCDEvents() {
                     // Publish the message
                     pub_cd_events_.publish(event_buffer_msg);
 
-                    // Clen the buffer for the next itteration
+                    // Clean the buffer for the next itteration
                     event_buffer_.clear();
 
                     ROS_DEBUG("CD data available, buffer size: %d at time: %lui", static_cast<int>(event_buffer_msg.events.size()), event_buffer_msg.header.stamp.toNSec());
