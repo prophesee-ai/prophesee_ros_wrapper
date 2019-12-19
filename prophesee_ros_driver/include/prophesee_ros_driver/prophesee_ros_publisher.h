@@ -80,7 +80,7 @@ private:
     sensor_msgs::CameraInfo cam_info_msg_;
 
     /// \brief Pointer for the Activity Filter Instance
-    std::shared_ptr< Prophesee::ActivityNoiseFilterAlgorithm<> > activity_filter_;
+    std::shared_ptr<Prophesee::ActivityNoiseFilterAlgorithm<>> activity_filter_;
 
     /// \brief Path to the file with the camera settings (biases)
     std::string biases_file_;
@@ -120,7 +120,7 @@ private:
 
     /// \brief Event buffer time stamps
     ros::Time event_buffer_start_time_, event_buffer_current_time_;
- 
+
     /// \brief  Mean gravity value at Earth surface [m/s^2]
     static constexpr double GRAVITY = 9.81;
 

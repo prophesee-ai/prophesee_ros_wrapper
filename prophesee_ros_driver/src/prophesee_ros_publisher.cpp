@@ -19,14 +19,13 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-PropheseeWrapperPublisher::PropheseeWrapperPublisher():
+PropheseeWrapperPublisher::PropheseeWrapperPublisher() :
     nh_("~"),
     biases_file_(""),
     max_event_rate_(6000),
     graylevel_rate_(30),
     event_streaming_rate_(0),
-    activity_filter_temporal_depth_(0)
-{
+    activity_filter_temporal_depth_(0) {
     camera_name_ = "PropheseeCamera_optical_frame";
 
     // Load Parameters
@@ -70,10 +69,10 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher():
 
     /** Read the current stream rate of events **/
     if (this->event_streaming_rate_ > 0) {
-        this->event_delta_t_.fromNSec(1e09/this->event_streaming_rate_);
+        this->event_delta_t_.fromNSec(1e09 / this->event_streaming_rate_);
     } else {
         this->event_delta_t_.fromSec(EVENT_DEFAULT_DELTA_T);
-        this->event_streaming_rate_ = 1.0/this->event_delta_t_.toSec();
+        this->event_streaming_rate_ = 1.0 / this->event_delta_t_.toSec();
         nh_.setParam("event_streaming_rate", this->event_streaming_rate_);
     }
 
@@ -85,7 +84,8 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher():
     auto &geometry                        = camera_.geometry();
     ROS_INFO("[CONF] Width:%i, Height:%i", geometry.width(), geometry.height());
     ROS_INFO("[CONF] Max event rate, in kEv/s: %u", config.max_drop_rate_limit_kEv_s);
-    ROS_INFO("[CONF] Streaming event array rate, in Hz: %4.2f [%lu microseconds]", this->event_streaming_rate_, this->event_delta_t_.toNSec()/1000);
+    ROS_INFO("[CONF] Streaming event array rate, in Hz: %4.2f [%lu microseconds]", this->event_streaming_rate_,
+             this->event_delta_t_.toNSec() / 1000);
     ROS_INFO("[CONF] Activity Filter Temporal depth: %d [microseconds]", this->activity_filter_temporal_depth_);
     ROS_INFO("[CONF] Serial number: %s", config.serial_number.c_str());
 
@@ -96,9 +96,8 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher():
 
     // Set the activity filter instance
     if (activity_filter_temporal_depth_ > 0) {
-    activity_filter_.reset(new Prophesee::ActivityNoiseFilterAlgorithm<>(camera_.geometry().width(),
-                                                                 camera_.geometry().height(),
-                                                                 activity_filter_temporal_depth_));
+        activity_filter_.reset(new Prophesee::ActivityNoiseFilterAlgorithm<>(
+            camera_.geometry().width(), camera_.geometry().height(), activity_filter_temporal_depth_));
     }
 }
 
@@ -128,7 +127,7 @@ bool PropheseeWrapperPublisher::openCamera() {
 void PropheseeWrapperPublisher::startPublishing() {
     camera_.start();
     start_timestamp_ = ros::Time::now();
-    last_timestamp_ = start_timestamp_;
+    last_timestamp_  = start_timestamp_;
 
     if (publish_cd_)
         publishCDEvents();
@@ -145,9 +144,9 @@ void PropheseeWrapperPublisher::startPublishing() {
     }
 
     ros::Rate loop_rate(5);
-    while(ros::ok()) {
+    while (ros::ok()) {
         /** Get the current max_event_rate (dynamic configuration) **/
-        int new_max_event_rate; 
+        int new_max_event_rate;
         nh_.getParam("max_event_rate", new_max_event_rate);
         if (new_max_event_rate != max_event_rate_) {
             /** Save the new max event rate **/
@@ -162,10 +161,10 @@ void PropheseeWrapperPublisher::startPublishing() {
         /** Get the current stream rate of events (dynamic configuration) **/
         nh_.getParam("event_streaming_rate", event_streaming_rate_);
         if (this->event_streaming_rate_ > 0) {
-            this->event_delta_t_.fromNSec(1e09/this->event_streaming_rate_);
+            this->event_delta_t_.fromNSec(1e09 / this->event_streaming_rate_);
         } else {
             this->event_delta_t_.fromSec(this->EVENT_DEFAULT_DELTA_T);
-            this->event_streaming_rate_ = 1.0/this->event_delta_t_.toSec();
+            this->event_streaming_rate_ = 1.0 / this->event_delta_t_.toSec();
             nh_.setParam("event_streaming_rate", this->event_streaming_rate_);
         }
 
@@ -208,11 +207,11 @@ void PropheseeWrapperPublisher::publishCDEvents() {
                         activity_filter_->process_output(ev_begin, ev_end, inserter);
                     } else {
                         /** When there is not activity filter **/
-                        std::copy(ev_begin, ev_end, inserter); 
+                        std::copy(ev_begin, ev_end, inserter);
                     }
 
                     /** Get the last time stamp **/
-                    event_buffer_current_time_.fromNSec(start_timestamp_.toNSec() + (ev_end-1)->t * 1000.00);
+                    event_buffer_current_time_.fromNSec(start_timestamp_.toNSec() + (ev_end - 1)->t * 1000.00);
                 }
 
                 if ((event_buffer_current_time_ - event_buffer_start_time_) >= event_delta_t_) {
@@ -221,8 +220,8 @@ void PropheseeWrapperPublisher::publishCDEvents() {
 
                     // Sensor geometry in header of the message
                     event_buffer_msg.header.stamp = event_buffer_current_time_;
-                    event_buffer_msg.height = camera_.geometry().height();
-                    event_buffer_msg.width  = camera_.geometry().width();
+                    event_buffer_msg.height       = camera_.geometry().height();
+                    event_buffer_msg.width        = camera_.geometry().width();
 
                     /** Set the buffer size for the msg **/
                     event_buffer_msg.events.resize(event_buffer_.size());
@@ -230,13 +229,11 @@ void PropheseeWrapperPublisher::publishCDEvents() {
                     // Copy the events to the ros buffer format
                     auto buffer_msg_it = event_buffer_msg.events.begin();
                     for (const Prophesee::EventCD *it = std::addressof(event_buffer_[0]);
-                                                it != std::addressof(event_buffer_[event_buffer_.size()]);
-                                                ++it, ++buffer_msg_it)
-                    {
+                         it != std::addressof(event_buffer_[event_buffer_.size()]); ++it, ++buffer_msg_it) {
                         prophesee_event_msgs::Event &event = *buffer_msg_it;
-                        event.x = it->x;
-                        event.y = it->y;
-                        event.polarity = it->p;
+                        event.x                            = it->x;
+                        event.y                            = it->y;
+                        event.polarity                     = it->p;
                         event.ts.fromNSec(start_timestamp_.toNSec() + (it->t * 1000.00));
                     }
 
@@ -246,7 +243,8 @@ void PropheseeWrapperPublisher::publishCDEvents() {
                     // Clean the buffer for the next itteration
                     event_buffer_.clear();
 
-                    ROS_DEBUG("CD data available, buffer size: %d at time: %lui", static_cast<int>(event_buffer_msg.events.size()), event_buffer_msg.header.stamp.toNSec());
+                    ROS_DEBUG("CD data available, buffer size: %d at time: %lui",
+                              static_cast<int>(event_buffer_msg.events.size()), event_buffer_msg.header.stamp.toNSec());
                 }
 
             });
@@ -266,10 +264,10 @@ void PropheseeWrapperPublisher::publishGrayLevels() {
 
             // Define the message for the gray level frame
             cv_bridge::CvImage gl_frame_msg;
-            gl_frame_msg.header.stamp = last_timestamp_;
+            gl_frame_msg.header.stamp    = last_timestamp_;
             gl_frame_msg.header.frame_id = camera_name_;
-            gl_frame_msg.encoding = sensor_msgs::image_encodings::MONO8;
-            gl_frame_msg.image = tone_mapper_(f);
+            gl_frame_msg.encoding        = sensor_msgs::image_encodings::MONO8;
+            gl_frame_msg.image           = tone_mapper_(f);
 
             // Publish the message
             pub_gl_frame_.publish(gl_frame_msg);
@@ -289,17 +287,16 @@ void PropheseeWrapperPublisher::publishGrayLevels() {
 void PropheseeWrapperPublisher::publishIMUEvents() {
     // Initialize and publish a buffer of IMU events
     try {
-        Prophesee::CallbackId imu_callback = camera_.imu().add_callback(
-            [this](const Prophesee::EventIMU *ev_begin, const Prophesee::EventIMU *ev_end) {
-                if (ev_begin < ev_end)
-                {
+        Prophesee::CallbackId imu_callback =
+            camera_.imu().add_callback([this](const Prophesee::EventIMU *ev_begin, const Prophesee::EventIMU *ev_end) {
+                if (ev_begin < ev_end) {
                     const unsigned int buffer_size = ev_end - ev_begin;
 
                     for (auto it = ev_begin; it != ev_end; ++it) {
                         /** Store data in IMU sensor **/
                         sensor_msgs::Imu imu_sensor_msg;
                         imu_sensor_msg.header.stamp.fromNSec(start_timestamp_.toNSec() + (it->t * 1000.00));
-                        imu_sensor_msg.header.frame_id = camera_name_;
+                        imu_sensor_msg.header.frame_id    = camera_name_;
                         imu_sensor_msg.angular_velocity.x = it->gx; // IMU x-axis [rad/s]is pointing left
                         imu_sensor_msg.angular_velocity.y = it->gy; // IMU y-axis [rad/s]is pointing up
                         imu_sensor_msg.angular_velocity.z = it->gz; // IMU z-axis[rad/s] is pointing forward
@@ -312,8 +309,7 @@ void PropheseeWrapperPublisher::publishIMUEvents() {
                         // Keep track of the most updated timestamp
                         last_timestamp_ = imu_sensor_msg.header.stamp;
 
-                        if (pub_imu_events_.getNumSubscribers() > 0)
-                        {
+                        if (pub_imu_events_.getNumSubscribers() > 0) {
                             // Publish the message
                             pub_imu_events_.publish(imu_sensor_msg);
                         }
