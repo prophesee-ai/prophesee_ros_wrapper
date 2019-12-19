@@ -10,6 +10,7 @@
 #include <sensor_msgs/CameraInfo.h>
 
 #include <prophesee_driver.h>
+#include <prophesee_core/algos/core/activity_noise_filter_algorithm.h>
 
 #include "log_tone_mapper.h"
 
@@ -61,6 +62,16 @@ private:
     /// Used to access data from a camera
     Prophesee::Camera camera_;
 
+    /// \brief Instance of Events Array
+    ///
+    /// Accumulated Array of events
+    std::vector<Prophesee::EventCD> event_buffer_;
+
+    /// \brief Frame reconstruction in gray scale
+    ///
+    /// Gray level fram from tone mapper reconstruction
+    cv::Mat graylevel_frame_;
+
     /// \brief Instance of LogToneMapper class
     ///
     /// Used to reconstract gray-levels from CD and EM data and apply tone mapping
@@ -69,14 +80,17 @@ private:
     /// \brief Message for publishing the camera info
     sensor_msgs::CameraInfo cam_info_msg_;
 
+    /// \brief Pointer for the Activity Filter Instance
+    std::shared_ptr< Prophesee::ActivityNoiseFilterAlgorithm<> > activity_filter_;
+
     /// \brief Path to the file with the camera settings (biases)
     std::string biases_file_;
 
     /// \brief Camera name in string format
     std::string camera_name_;
 
-    /// \brief Camera string time
-    ros::Time start_timestamp_;
+    /// \brief Wall time stamps
+    ros::Time start_timestamp_, last_timestamp_;
 
     /// \brief Maximum events rate, in kEv/s
     int max_event_rate_;
@@ -90,10 +104,30 @@ private:
     /// \brief If showing gray-level frames
     bool publish_graylevels_;
 
-   /// \brief If showing IMU events
+    /// \brief If showing IMU events
     bool publish_imu_;
 
-    static constexpr double GRAVITY = 9.81; /** Mean gravity value at Earth surface [m/s^2] **/
+    /// \brief Events rate (configuration)
+    /// Desirable rate in Hz for the events
+    double event_streaming_rate_;
+
+    /// \brief Actvity Filter Temporal depth (configuration)
+    /// Desirable Temporal depth in micro seconds
+    int activity_filter_temporal_depth_;
+
+    /// \brief delta_time for packages cd_events
+    /// Time step for packaging events in an array
+    ros::Duration event_delta_t_;
+
+    /// \brief Event buffer time stamps
+    ros::Time event_buffer_start_time_, event_buffer_current_time_;
+ 
+    /// \brief  Mean gravity value at Earth surface [m/s^2]
+    static constexpr double GRAVITY = 9.81;
+
+    /// \brief delta time of cd events fixed by Prophesee driver
+    /// The delta time is set to a fixed number of 64 microseconds (1e-06)
+    static constexpr double EVENT_DEFAULT_DELTA_T = 6.4e-05;
 };
 
 #endif /* PROPHESEE_ROS_PUBLISHER_H_ */
