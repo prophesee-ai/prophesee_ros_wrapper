@@ -6,20 +6,19 @@
 
 #include "cd_frame_generator.h"
 
-CDFrameGenerator::CDFrameGenerator() {
-}
+CDFrameGenerator::CDFrameGenerator() {}
 
 CDFrameGenerator::~CDFrameGenerator() {
     stop();
 }
 
 void CDFrameGenerator::init(long width, long height) {
-    width_ = width;
-    height_ = height;
-    pix_count_  = height_ * width_;
+    width_     = width;
+    height_    = height;
+    pix_count_ = height_ * width_;
     ts_history_.resize(pix_count_);
 
-    frame_ = cv::Mat(height_, width_, CV_8UC1, cv::Scalar(128));
+    frame_         = cv::Mat(height_, width_, CV_8UC1, cv::Scalar(128));
     frame_to_show_ = cv::Mat(height_, width_, CV_8UC1, cv::Scalar(128));
 
     initialized_ = true;
@@ -40,9 +39,7 @@ void CDFrameGenerator::add_events(const prophesee_event_msgs::EventArray::ConstP
     }
 
     if (should_process) {
-        {
-            thread_should_process_ = true;
-        }
+        { thread_should_process_ = true; }
         thread_cond_.notify_one();
     }
 
@@ -56,8 +53,8 @@ void CDFrameGenerator::reset() {
     {
         std::unique_lock<std::mutex> lock_process(processing_mutex_);
         thread_should_process_ = false;
-        last_ts_ = 0;
-        last_process_ts_ = 0;
+        last_ts_               = 0;
+        last_process_ts_       = 0;
 
         // Clean the queues with events
         events_queue_front_.clear();
@@ -165,9 +162,7 @@ bool CDFrameGenerator::stop() {
         return false;
     }
 
-    {
-        thread_should_stop_ = true;
-    }
+    { thread_should_stop_ = true; }
 
     thread_cond_.notify_one();
     thread_.join();

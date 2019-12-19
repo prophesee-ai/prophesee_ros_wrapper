@@ -9,8 +9,7 @@
 LogToneMapper::LogToneMapper(float percent_to_exclude, std::uint16_t sampling_step_pixel) :
     lut_(1, 256, CV_8U),
     excluded_pixels_ratio_(percent_to_exclude),
-    sample_step_(sampling_step_pixel) {
-}
+    sample_step_(sampling_step_pixel) {}
 
 void LogToneMapper::estimate_tone_mapping_parameters(const cv::Mat &exposure_frame, std::int32_t &min_dt,
                                                      std::int32_t &max_dt) {
@@ -47,9 +46,9 @@ void LogToneMapper::apply_tone_mapping(const cv::Mat &exposure_frame, std::int32
         cv::normalize(tmp3_, tmp2_, 0, 255, cv::NORM_MINMAX, CV_8U);
 
         // build a LUT for efficient log tone mapping
-        const float alpha           = 1.0f / (std::log(min_dt) - std::log(max_dt));
-        const float beta            = -std::log(max_dt) * alpha;
-        const float step            = (1.0f / min_dt - 1.0f / max_dt) / 255.f;
+        const float alpha     = 1.0f / (std::log(min_dt) - std::log(max_dt));
+        const float beta      = -std::log(max_dt) * alpha;
+        const float step      = (1.0f / min_dt - 1.0f / max_dt) / 255.f;
         std::uint8_t *lut_ptr = lut_.ptr<std::uint8_t>();
         lut_ptr[0]            = 0;
         lut_ptr[255]          = 255;

@@ -80,7 +80,7 @@ public:
     ///
     /// \return Timestamp in microseconds
     inline Prophesee::timestamp ros_timestamp_in_us(const ros::Time &ts) const {
-        return static_cast<Prophesee::timestamp>(ts.toNSec()/1000.00);
+        return static_cast<Prophesee::timestamp>(ts.toNSec() / 1000.00);
     };
 
 private:

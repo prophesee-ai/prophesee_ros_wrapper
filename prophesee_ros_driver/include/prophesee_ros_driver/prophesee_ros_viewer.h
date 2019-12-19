@@ -45,12 +45,12 @@ private:
     /// It gets width and height of the sensor and calls init() function
     ///
     /// @param msg : ROS message with the camera info
-    void cameraInfoCallback(const sensor_msgs::CameraInfo::ConstPtr& msg);
+    void cameraInfoCallback(const sensor_msgs::CameraInfo::ConstPtr &msg);
 
     /// \brief Callback triggered when data are received from gray-level frame topic
     ///
     /// @param msg ROS message with teh gray-level frame
-    void glFrameCallback(const sensor_msgs::ImageConstPtr& msg);
+    void glFrameCallback(const sensor_msgs::ImageConstPtr &msg);
 
     /// \brief Initializes the frame generators and the displayers
     ///
@@ -59,7 +59,7 @@ private:
     ///
     /// It initializes CD frame generator with the sensor's width and height.
     /// It also creates the displayers.
-    bool init(const unsigned int& sensor_width, const unsigned int& sensor_height);
+    bool init(const unsigned int &sensor_width, const unsigned int &sensor_height);
 
     /// \brief Creates a displayer
     ///
@@ -68,8 +68,8 @@ private:
     /// @param sensor_height : Height of the window
     /// @param shift_x : Position (x shift) of the window
     /// @param shift_y : Position (y shift) of the window
-    void create_window(const std::string &window_name, const unsigned int& sensor_width,
-                       const unsigned int& sensor_height, const int &shift_x=0, const int &shift_y=0);
+    void create_window(const std::string &window_name, const unsigned int &sensor_width,
+                       const unsigned int &sensor_height, const int &shift_x = 0, const int &shift_y = 0);
 
     /// \brief Node handler - the access point to communication with ROS
     ros::NodeHandle nh_;

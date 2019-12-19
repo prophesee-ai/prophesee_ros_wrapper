@@ -6,16 +6,15 @@
 
 #include "prophesee_ros_viewer.h"
 
-typedef const boost::function< void(const prophesee_event_msgs::EventArray::ConstPtr& msgs)> callback;
+typedef const boost::function<void(const prophesee_event_msgs::EventArray::ConstPtr &msgs)> callback;
 
-PropheseeWrapperViewer::PropheseeWrapperViewer():
+PropheseeWrapperViewer::PropheseeWrapperViewer() :
     nh_("~"),
     it_(nh_),
     cd_window_name_("CD Events"),
     gl_window_name_("GrayLevel Data"),
     display_acc_time_(5000),
-    initialized_(false)
-{
+    initialized_(false) {
     std::string camera_name("");
 
     // Load Parameters
@@ -24,8 +23,8 @@ PropheseeWrapperViewer::PropheseeWrapperViewer():
     nh_.getParam("show_graylevels", show_graylevels_);
     nh_.getParam("display_accumulation_time", display_acc_time_);
 
-    const std::string topic_cam_info = "/prophesee/" + camera_name + "/camera_info";
-    const std::string topic_cd_event_buffer = "/prophesee/" + camera_name + "/cd_events_buffer";
+    const std::string topic_cam_info         = "/prophesee/" + camera_name + "/camera_info";
+    const std::string topic_cd_event_buffer  = "/prophesee/" + camera_name + "/cd_events_buffer";
     const std::string topic_graylevel_buffer = "/prophesee/" + camera_name + "/graylevel_image";
 
     // Subscribe to camera info topic
@@ -34,7 +33,7 @@ PropheseeWrapperViewer::PropheseeWrapperViewer():
     // Subscribe to CD buffer topic
     if (show_cd_) {
         callback displayerCDCallback = boost::bind(&CDFrameGenerator::add_events, &cd_frame_generator_, _1);
-        sub_cd_events_ = nh_.subscribe(topic_cd_event_buffer, 500, displayerCDCallback);
+        sub_cd_events_               = nh_.subscribe(topic_cd_event_buffer, 500, displayerCDCallback);
     }
 
     // Subscribe to gray-level event buffer topic
@@ -60,7 +59,7 @@ bool PropheseeWrapperViewer::isInitialized() {
     return initialized_;
 }
 
-void PropheseeWrapperViewer::cameraInfoCallback(const sensor_msgs::CameraInfo::ConstPtr& msg) {
+void PropheseeWrapperViewer::cameraInfoCallback(const sensor_msgs::CameraInfo::ConstPtr &msg) {
     if (initialized_)
         return;
 
@@ -68,19 +67,16 @@ void PropheseeWrapperViewer::cameraInfoCallback(const sensor_msgs::CameraInfo::C
         init(msg->width, msg->height);
 }
 
-void PropheseeWrapperViewer::glFrameCallback(const sensor_msgs::ImageConstPtr& msg) {
+void PropheseeWrapperViewer::glFrameCallback(const sensor_msgs::ImageConstPtr &msg) {
     if (!initialized_)
         return;
 
     try {
         cv::imshow(gl_window_name_, cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::TYPE_8UC1)->image);
-    }
-    catch (cv_bridge::Exception& e) {
-        ROS_ERROR("cv_bridge exception: %s", e.what());
-    }
+    } catch (cv_bridge::Exception &e) { ROS_ERROR("cv_bridge exception: %s", e.what()); }
 }
 
-bool PropheseeWrapperViewer::init(const unsigned int& sensor_width, const unsigned int& sensor_height) {
+bool PropheseeWrapperViewer::init(const unsigned int &sensor_width, const unsigned int &sensor_height) {
     if (show_cd_) {
         // Define the display window for CD events
         create_window(cd_window_name_, sensor_width, sensor_height, 0, 0);
@@ -101,8 +97,8 @@ bool PropheseeWrapperViewer::init(const unsigned int& sensor_width, const unsign
     return true;
 }
 
-void PropheseeWrapperViewer::create_window(const std::string &window_name, const unsigned int& sensor_width,
-                                           const unsigned int& sensor_height, const int &shift_x, const int &shift_y) {
+void PropheseeWrapperViewer::create_window(const std::string &window_name, const unsigned int &sensor_width,
+                                           const unsigned int &sensor_height, const int &shift_x, const int &shift_y) {
     cv::namedWindow(window_name, CV_GUI_EXPANDED);
     cv::resizeWindow(window_name, sensor_width, sensor_height);
     // move needs to be after resize on apple, otherwise the window stacks
@@ -124,7 +120,7 @@ void PropheseeWrapperViewer::showData() {
     }
 }
 
-int process_ui_for(const int& delay_ms) {
+int process_ui_for(const int &delay_ms) {
     auto then = std::chrono::high_resolution_clock::now();
     int key   = cv::waitKey(delay_ms);
     auto now  = std::chrono::high_resolution_clock::now();
@@ -140,7 +136,7 @@ int main(int argc, char **argv) {
 
     PropheseeWrapperViewer wv;
 
-    while(ros::ok() && !wv.isInitialized()) {
+    while (ros::ok() && !wv.isInitialized()) {
         ros::spinOnce();
     }
 
