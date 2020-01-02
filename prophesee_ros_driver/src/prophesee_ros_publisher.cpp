@@ -346,26 +346,16 @@ void PropheseeWrapperPublisher::publishIMUEvents() {
 void PropheseeWrapperPublisher::publishExtTrigger() {
     
     try {
-        Prophesee::CallbackId imu_callback = camera_.ext_trigger().add_callback(
+        Prophesee::CallbackId extTrigger_callback = camera_.ext_trigger().add_callback(
             [this](const Prophesee::EventExtTrigger *ext_begin, const Prophesee::EventExtTrigger *ext_end)
             {
-				//std::cout<<"TRIGGER EXT: "<<ext_begin[0]<<std::endl;  
-				//ROS_INFO("[CONF] TRIGGER!!!!");    
                 while(ext_begin < ext_end) {
-                    //std::cout << "Trigger in has been received " << ext_begin->p << " at " << ext_begin->t << std::endl;
-                    
                     prophesee_event_msgs::Event event;
                     event.polarity = ext_begin->p;
                     event.ts.fromNSec(start_timestamp_.toNSec() + (ext_begin->t * 1000.00));
                     pub_extTrigger_.publish(event);
-
                     ++ext_begin;
                     }  
-            // DEFINE MESSAGE
-            //std_msgs::Bool test;
-            //test.data = 1;
-            //pub_extTrigger_.publish(test);
-            
             });
     } catch (Prophesee::CameraException &e) {
         ROS_WARN("%s", e.what());
