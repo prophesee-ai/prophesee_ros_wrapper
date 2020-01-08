@@ -18,7 +18,7 @@ Supported Prophesee EVK:
 
 ## Installation
 
-  * First of all, you would need to install dependencies, such as Prophesee Driver SDK. Prophesee Driver SDK can be downloaded from our Knowledge Center. In case if you do not have an access to Knowledge Center yet, then please provide us a short decription of your research project and request an access via this webform https://www.prophesee.ai/contact-us/
+  * First of all, you would need to install dependencies, such as Prophesee Driver SDK. Prophesee Driver SDK can be downloaded from our Knowledge Center. In case if you do not have an access to Knowledge Center yet, then please provide us a short description of your research project and request an access via this webform https://www.prophesee.ai/contact-us/
 
     ```
         sudo apt install prophesee-*
