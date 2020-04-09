@@ -87,7 +87,7 @@ void CDFrameGenerator::generate() {
         if (thread_should_stop_)
             break;
 
-        Prophesee::timestamp threshold_to_display;
+        Metavision::timestamp threshold_to_display;
         {
             std::unique_lock<std::mutex> lock(processing_mutex_);
             std::swap(events_queue_front_, events_queue_back_);
@@ -102,7 +102,7 @@ void CDFrameGenerator::generate() {
         std::unique_lock<std::mutex> lock(frame_show_mutex_);
         for (auto it = events_queue_back_.rbegin(), it_end = events_queue_back_.rend();
              it != it_end && ros_timestamp_in_us(it->ts) >= threshold_to_display; ++it) {
-            Prophesee::timestamp &p_ts = ts_history_[it->y * width_ + it->x];
+            Metavision::timestamp &p_ts = ts_history_[it->y * width_ + it->x];
             if (p_ts < ros_timestamp_in_us(it->ts)) {
                 p_ts                             = ros_timestamp_in_us(it->ts);
                 frame_.at<uint8_t>(it->y, it->x) = it->polarity ? 255 : 0;
@@ -122,7 +122,7 @@ void CDFrameGenerator::generate() {
     }
 }
 
-void CDFrameGenerator::set_display_accumulation_time_us(Prophesee::timestamp display_accumulation_time_us) {
+void CDFrameGenerator::set_display_accumulation_time_us(Metavision::timestamp display_accumulation_time_us) {
     std::lock_guard<std::mutex> lock(processing_mutex_);
     display_accumulation_time_us_ = display_accumulation_time_us;
 }
@@ -133,7 +133,7 @@ const cv::Mat &CDFrameGenerator::get_current_frame() {
     return frame_to_show_;
 }
 
-const Prophesee::timestamp &CDFrameGenerator::get_last_event_timestamp() const {
+const Metavision::timestamp &CDFrameGenerator::get_last_event_timestamp() const {
     return last_ts_;
 }
 

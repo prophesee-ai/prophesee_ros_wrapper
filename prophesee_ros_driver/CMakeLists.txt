@@ -23,7 +23,7 @@ find_package(catkin REQUIRED COMPONENTS
         prophesee_event_msgs
 )
 
-find_package(prophesee_driver REQUIRED)
+find_package(MetavisionSDK COMPONENTS driver REQUIRED)
 
 if (CATKIN_ENABLE_TESTING)
   find_package(roslaunch REQUIRED)
@@ -55,7 +55,7 @@ add_executable(prophesee_ros_publisher
 target_link_libraries(
     prophesee_ros_publisher
     ${catkin_LIBRARIES}
-    prophesee_driver
+    metavision_sdk_driver
 )
 
 # Prophesee Viewer
@@ -68,5 +68,5 @@ add_executable(prophesee_ros_viewer
 target_link_libraries(
     prophesee_ros_viewer
     ${catkin_LIBRARIES}
-    prophesee_driver
+    metavision_sdk_driver
 )
