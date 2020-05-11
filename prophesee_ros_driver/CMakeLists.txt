@@ -21,6 +21,8 @@ find_package(catkin REQUIRED COMPONENTS
         cv_bridge
         image_transport
         prophesee_event_msgs
+        genmsg
+        message_generation
 )
 
 find_package(MetavisionSDK COMPONENTS driver REQUIRED)
@@ -33,7 +35,7 @@ endif()
 catkin_package(
   INCLUDE_DIRS include/${PROJECT_NAME}/
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp sensor_msgs cv_bridge image_transport
+  CATKIN_DEPENDS roscpp sensor_msgs cv_bridge image_transport prophesee_event_msgs
 )
 
 ###########
@@ -54,8 +56,14 @@ add_executable(prophesee_ros_publisher
 
 target_link_libraries(
     prophesee_ros_publisher
-    ${catkin_LIBRARIES}
     metavision_sdk_driver
+    ${catkin_LIBRARIES}
+)
+
+add_dependencies(
+    prophesee_ros_publisher
+    prophesee_event_msgs_generate_messages_cpp
+    ${catkin_EXPORTED_TARGETS}
 )
 
 # Prophesee Viewer
@@ -67,6 +75,12 @@ add_executable(prophesee_ros_viewer
 
 target_link_libraries(
     prophesee_ros_viewer
-    ${catkin_LIBRARIES}
     metavision_sdk_driver
+    ${catkin_LIBRARIES}
+)
+
+add_dependencies(
+    prophesee_ros_viewer
+    prophesee_event_msgs_generate_messages_cpp
+    ${catkin_EXPORTED_TARGETS}
 )
