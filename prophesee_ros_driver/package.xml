@@ -5,7 +5,7 @@
   <description>Publisher and Viewer for Prophesee Event-Based Sensors</description>
 
   <maintainer email="nlyubova@prophesee.ai">Natalia Lyubova</maintainer>
-  <author email="natalia.lyubova@prophesee.ai">Natalia Lyubova</author>
+  <author email="nlyubova@prophesee.ai">Natalia Lyubova</author>
   <author email="egor.makhov@mail.polimi.it">Egor Makhov</author>
 
   <license>Apache 2.0</license>
