@@ -19,14 +19,14 @@ Supported Prophesee EVK:
 
 First of all, you would need to install dependencies, such as Metavision SDK:
 
-  * Sign up for a trial version of [Metavision SDK](https://support.prophesee.ai/portal/en/kb/articles/sdk-trial-request-form), if not done yet.
+  * Request an access to Knowledge Center, if not done yet. To get an access, fill the [webform](https://www.prophesee.ai/contact-us/) and provide us a short description of your research project.
 
-  * Request an access to Knowledge Center, if not done yet. To get an access, fill the [webform](https://www.prophesee.ai/contact-us/) and provide us a short description of your research project
+  * Sign up for a trial version of [Metavision SDK](https://support.prophesee.ai/portal/en/kb/articles/sdk-trial-request-form), if not done yet.
 
   * Install Metavision SDK following [the instructions on Knowledge Center](https://support.prophesee.ai/portal/en/kb/articles/linux-software).
 
 
-Compile GitHub code:
+Then, compile GitHub code:
 
   * Clone the source to your catkin workspace ( [create a workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace), if needed)
 
