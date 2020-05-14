@@ -12,6 +12,9 @@
     <!-- Maximum event rate in kEv/s. With 0 does not set any limit-->
     <param name="max_event_rate" value="6000" />
 
+    <!-- Instead of live camera, you can read data offline from raw file -->
+    <param name="raw_file_to_read" value="" />
+
     <!-- Streaming rate in Hz for the events array. By default is 64 microseconds or max 100 events in array -->
     <param name="event_streaming_rate" value="0" />
 

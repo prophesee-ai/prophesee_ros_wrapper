@@ -85,6 +85,9 @@ private:
     /// \brief Path to the file with the camera settings (biases)
     std::string biases_file_;
 
+    /// \brief Raw file to read instead of live camera
+    std::string raw_file_to_read_;
+
     /// \brief Camera name in string format
     std::string camera_name_;
 

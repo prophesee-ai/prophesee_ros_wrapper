@@ -22,6 +22,7 @@
 PropheseeWrapperPublisher::PropheseeWrapperPublisher() :
     nh_("~"),
     biases_file_(""),
+    raw_file_to_read_(""),
     max_event_rate_(6000),
     graylevel_rate_(30),
     event_streaming_rate_(0),
@@ -35,6 +36,7 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher() :
     nh_.getParam("publish_imu", publish_imu_);
     nh_.getParam("bias_file", biases_file_);
     nh_.getParam("max_event_rate", max_event_rate_);
+    nh_.getParam("raw_file_to_read", raw_file_to_read_);
     nh_.getParam("graylevel_frame_rate", graylevel_rate_);
     nh_.getParam("event_streaming_rate", event_streaming_rate_);
     nh_.getParam("activity_filter_temporal_depth", activity_filter_temporal_depth_);
@@ -43,6 +45,9 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher() :
     const std::string topic_cd_event_buffer = "/prophesee/" + camera_name_ + "/cd_events_buffer";
     const std::string topic_gl_frame        = "/prophesee/" + camera_name_ + "/graylevel_image";
     const std::string topic_imu_sensor      = "/prophesee/" + camera_name_ + "/imu";
+
+    if (!raw_file_to_read_.empty())
+        publish_imu_ = false;
 
     pub_info_ = nh_.advertise<sensor_msgs::CameraInfo>(topic_cam_info, 1);
 
@@ -114,11 +119,18 @@ bool PropheseeWrapperPublisher::openCamera() {
 
     // Initialize the camera instance
     try {
-        camera_ = Metavision::Camera::from_first_available();
-        if (!biases_file_.empty()) {
-            ROS_INFO("[CONF] Loading bias file: %s", biases_file_.c_str());
-            camera_.biases().set_from_file(biases_file_);
+        if (raw_file_to_read_.empty()) {
+            camera_ = Metavision::Camera::from_first_available();
+
+            if (!biases_file_.empty()) {
+                ROS_INFO("[CONF] Loading bias file: %s", biases_file_.c_str());
+                camera_.biases().set_from_file(biases_file_);
+            }
+        } else {
+            camera_ = Metavision::Camera::from_file(raw_file_to_read_);
+            ROS_INFO("[CONF] Reading from raw file: %s", raw_file_to_read_.c_str());
         }
+
         camera_is_opened = true;
     } catch (Metavision::CameraException &e) { ROS_WARN("%s", e.what()); }
     return camera_is_opened;

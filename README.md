@@ -56,7 +56,7 @@ The package contains the following ROS nodes:
   * prophesee_ros_publisher
   * prophesee_ros_viewer
 
-### Data publisher
+### Publishing data from live camera
 
 To publish data from Prophesee camera to ROS topics:
 
@@ -68,15 +68,66 @@ The following topics will be published:
   * /prophesee/camera/camera_info - info about the camera
   * /prophesee/camera/cd_events_buffer - buffer of CD (Change Detection) events
   * /prophesee/camera/imu - IMU data
- 
- 
 
-### Data viewer
+### Viewing data from ROS topics
 
 To visualize data from ROS topics:
 
   ```
         roslaunch prophesee_ros_driver prophesee_viewer.launch
+  ```
+
+### Recording data from live camera to rosbag
+
+To record data from live camera to rosbag:
+  * Start the publisher:
+
+  ```
+        roslaunch prophesee_ros_driver prophesee_publisher.launch
+  ```
+
+  * Start rosbag recording (choose the topics to record or record all available topics):
+
+  ```
+        rosbag record -a
+  ```
+
+### Publishing data from raw file
+
+To publish data from raw file to ROS topics and view the data:
+  * Set the path to your raw file in prophesee_publisher.launch file (raw_file_to_read parameter)
+  * Start the viewer, at first:
+
+  ```
+        roslaunch prophesee_ros_driver prophesee_viewer.launch
+  ```
+
+  * Start the publisher:
+
+  ```
+        roslaunch prophesee_ros_driver prophesee_publisher.launch
+  ```
+
+### Recording data from raw file to rosbag
+
+To record data from raw file to rosbag:
+  * Set the path to your raw file in prophesee_publisher.launch file (raw_file_to_read parameter)
+  * Start the ROS core
+
+  ```
+        roscore
+  ```
+
+  * Start rosbag recording (choose the topics to record or record all available topics):
+
+  ```
+        rosbag record -a
+  ```
+
+  * Start the publisher:
+
+  ```
+        roslaunch prophesee_ros_driver prophesee_publisher.launch
   ```
 
 ## Contact
