@@ -11,8 +11,6 @@
 #include <mutex>
 #include <opencv2/opencv.hpp>
 
-#include <metavision/sdk/driver/prophesee_driver.h>
-
 /// \brief Utility class to display EM events
 class LogToneMapper {
 public:

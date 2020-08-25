@@ -67,7 +67,6 @@ To publish data from Prophesee camera to ROS topics:
 The following topics will be published:
   * /prophesee/camera/camera_info - info about the camera
   * /prophesee/camera/cd_events_buffer - buffer of CD (Change Detection) events
-  * /prophesee/camera/imu - IMU data
 
 ### Viewing data from ROS topics
 

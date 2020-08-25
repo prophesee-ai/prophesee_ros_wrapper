@@ -9,8 +9,8 @@
 
 #include <sensor_msgs/CameraInfo.h>
 
-#include <metavision/sdk/driver/prophesee_driver.h>
-#include <metavision/sdk/core/algorithms/activity_noise_filter_algorithm.h>
+#include <metavision/sdk/driver/camera.h>
+#include <metavision/sdk/cv/algorithms/activity_noise_filter_algorithm.h>
 
 #include "log_tone_mapper.h"
 
@@ -38,9 +38,6 @@ private:
     /// \brief Publishes gray-level frames
     void publishGrayLevels();
 
-    /// \brief Publishes IMU events
-    void publishIMUEvents();
-
     /// \brief Node handler - the access point to communication with ROS
     ros::NodeHandle nh_;
 
@@ -52,9 +49,6 @@ private:
 
     /// \brief Publisher for gray-level frame
     ros::Publisher pub_gl_frame_;
-
-    /// \brief Publisher for IMU events
-    ros::Publisher pub_imu_events_;
 
     /// \brief Instance of Camera class
     ///
@@ -94,9 +88,6 @@ private:
     /// \brief Wall time stamps
     ros::Time start_timestamp_, last_timestamp_;
 
-    /// \brief Maximum events rate, in kEv/s
-    int max_event_rate_;
-
     /// \brief Grey-level rate, in fps
     int graylevel_rate_;
 
@@ -105,13 +96,6 @@ private:
 
     /// \brief If showing gray-level frames
     bool publish_graylevels_;
-
-    /// \brief If showing IMU events
-    bool publish_imu_;
-
-    /// \brief Events rate (configuration)
-    /// Desirable rate in Hz for the events
-    double event_streaming_rate_;
 
     /// \brief Actvity Filter Temporal depth (configuration)
     /// Desirable Temporal depth in micro seconds
