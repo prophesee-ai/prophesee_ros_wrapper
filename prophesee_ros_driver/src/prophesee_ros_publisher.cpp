@@ -5,6 +5,7 @@
  *******************************************************************/
 
 #include <mutex>
+#include <thread>
 
 #include <ros/ros.h>
 #include <std_msgs/String.h>
@@ -22,30 +23,23 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher() :
     nh_("~"),
     biases_file_(""),
     raw_file_to_read_(""),
-    graylevel_rate_(30),
     activity_filter_temporal_depth_(0) {
     camera_name_ = "PropheseeCamera_optical_frame";
 
     // Load Parameters
     nh_.getParam("camera_name", camera_name_);
     nh_.getParam("publish_cd", publish_cd_);
-    nh_.getParam("publish_graylevels", publish_graylevels_);
     nh_.getParam("bias_file", biases_file_);
     nh_.getParam("raw_file_to_read", raw_file_to_read_);
-    nh_.getParam("graylevel_frame_rate", graylevel_rate_);
     nh_.getParam("activity_filter_temporal_depth", activity_filter_temporal_depth_);
 
     const std::string topic_cam_info        = "/prophesee/" + camera_name_ + "/camera_info";
     const std::string topic_cd_event_buffer = "/prophesee/" + camera_name_ + "/cd_events_buffer";
-    const std::string topic_gl_frame        = "/prophesee/" + camera_name_ + "/graylevel_image";
 
     pub_info_ = nh_.advertise<sensor_msgs::CameraInfo>(topic_cam_info, 1);
 
     if (publish_cd_)
         pub_cd_events_ = nh_.advertise<prophesee_event_msgs::EventArray>(topic_cd_event_buffer, 500);
-
-    if (publish_graylevels_)
-        pub_gl_frame_ = nh_.advertise<cv_bridge::CvImage>(topic_gl_frame, 1);
 
     while (!openCamera()) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -111,9 +105,6 @@ void PropheseeWrapperPublisher::startPublishing() {
 
     if (publish_cd_)
         publishCDEvents();
-
-    if (publish_graylevels_)
-        publishGrayLevels();
 
     ros::Rate loop_rate(5);
     while (ros::ok()) {
@@ -200,36 +191,6 @@ void PropheseeWrapperPublisher::publishCDEvents() {
     } catch (Metavision::CameraException &e) {
         ROS_WARN("%s", e.what());
         publish_cd_ = false;
-    }
-}
-
-void PropheseeWrapperPublisher::publishGrayLevels() {
-    // Initialize and publish a gray-level frame
-    try {
-        camera_.set_exposure_frame_callback(graylevel_rate_, [this](Metavision::timestamp t, const cv::Mat &f) {
-            // Check the number of subscribers to the topic
-            if (pub_gl_frame_.getNumSubscribers() <= 0)
-                return;
-
-            // Define the message for the gray level frame
-            cv_bridge::CvImage gl_frame_msg;
-            gl_frame_msg.header.stamp    = last_timestamp_;
-            gl_frame_msg.header.frame_id = camera_name_;
-            gl_frame_msg.encoding        = sensor_msgs::image_encodings::MONO8;
-            gl_frame_msg.image           = tone_mapper_(f);
-
-            // Publish the message
-            pub_gl_frame_.publish(gl_frame_msg);
-
-            ROS_DEBUG("Graylevel data are available");
-        });
-    } catch (Metavision::CameraException &e) {
-        if (e.code().value() & Metavision::CameraErrorCode::UnsupportedFeature)
-            publish_graylevels_ = false;
-        else {
-            ROS_WARN("%s", e.what());
-            publish_graylevels_ = false;
-        }
     }
 }
 

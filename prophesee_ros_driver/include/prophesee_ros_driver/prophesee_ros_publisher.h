@@ -12,8 +12,6 @@
 #include <metavision/sdk/driver/camera.h>
 #include <metavision/sdk/cv/algorithms/activity_noise_filter_algorithm.h>
 
-#include "log_tone_mapper.h"
-
 /// \brief Main class for ROS publisher
 ///
 /// Publishes data from Prophesee sensor to ROS topics
@@ -35,9 +33,6 @@ private:
     /// \brief Publishes CD events
     void publishCDEvents();
 
-    /// \brief Publishes gray-level frames
-    void publishGrayLevels();
-
     /// \brief Node handler - the access point to communication with ROS
     ros::NodeHandle nh_;
 
@@ -46,9 +41,6 @@ private:
 
     /// \brief Publisher for CD events
     ros::Publisher pub_cd_events_;
-
-    /// \brief Publisher for gray-level frame
-    ros::Publisher pub_gl_frame_;
 
     /// \brief Instance of Camera class
     ///
@@ -59,16 +51,6 @@ private:
     ///
     /// Accumulated Array of events
     std::vector<Metavision::EventCD> event_buffer_;
-
-    /// \brief Frame reconstruction in gray scale
-    ///
-    /// Gray level fram from tone mapper reconstruction
-    cv::Mat graylevel_frame_;
-
-    /// \brief Instance of LogToneMapper class
-    ///
-    /// Used to reconstract gray-levels from CD and EM data and apply tone mapping
-    LogToneMapper tone_mapper_;
 
     /// \brief Message for publishing the camera info
     sensor_msgs::CameraInfo cam_info_msg_;
@@ -88,14 +70,8 @@ private:
     /// \brief Wall time stamps
     ros::Time start_timestamp_, last_timestamp_;
 
-    /// \brief Grey-level rate, in fps
-    int graylevel_rate_;
-
     /// \brief If showing CD events
     bool publish_cd_;
-
-    /// \brief If showing gray-level frames
-    bool publish_graylevels_;
 
     /// \brief Actvity Filter Temporal depth (configuration)
     /// Desirable Temporal depth in micro seconds

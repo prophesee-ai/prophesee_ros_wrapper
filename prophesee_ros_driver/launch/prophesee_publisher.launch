@@ -3,16 +3,12 @@
   <node pkg="prophesee_ros_driver" type="prophesee_ros_publisher" name="prophesee_ros_publisher" respawn="false" output="screen">
     <param name="camera_name" value="camera" />
     <param name="publish_cd" value="true" />
-    <param name="publish_graylevels" value="false" />
 
     <!-- Path to the file with the camera settings -->
     <param name="bias_file" value=""/>
 
     <!-- Instead of live camera, you can read data offline from raw file -->
     <param name="raw_file_to_read" value="" />
-
-    <!-- Graylevel frame rate in fps -->
-    <param name="graylevel_frame_rate" value="30" />
 
     <!-- Activity filter temporal depth in microseconds -->
     <param name="activity_filter_temporal_depth" value="0" />
