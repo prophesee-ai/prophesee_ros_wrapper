@@ -51,6 +51,7 @@ include_directories(
 # Prophesee Publisher
 add_executable(prophesee_ros_publisher
     src/prophesee_ros_publisher.cpp
+    src/log_tone_mapper.cpp
 )
 
 target_link_libraries(
@@ -69,6 +70,7 @@ add_dependencies(
 add_executable(prophesee_ros_viewer
     src/prophesee_ros_viewer.cpp
     src/cd_frame_generator.cpp
+    src/log_tone_mapper.cpp
 )
 
 target_link_libraries(

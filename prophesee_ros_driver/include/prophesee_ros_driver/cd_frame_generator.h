@@ -13,7 +13,7 @@
 #include <condition_variable>
 #include <opencv2/opencv.hpp>
 
-#include <metavision/sdk/base/utils/timestamp.h>
+#include <metavision/sdk/driver/prophesee_driver.h>
 
 #include <prophesee_event_msgs/Event.h>
 #include <prophesee_event_msgs/EventArray.h>
