@@ -2,7 +2,7 @@
 
 ![Event-based vision by Prophesee](event-based_vision_PROPHESEE.png)
 
-This metapackage contains ROS driver and messages for Prophesee event-based sensors.
+This metapackage contains ROS driver and messages for [Prophesee](https://www.prophesee.ai) event-based sensors.
 
 The aim of this metapackage is wrapping data access from event-based sensors from [Metavision SDK](https://docs.prophesee.ai/) software and publishing the data to ROS.
 
