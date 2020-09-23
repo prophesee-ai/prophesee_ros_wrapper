@@ -10,9 +10,7 @@ typedef const boost::function<void(const prophesee_event_msgs::EventArray::Const
 
 PropheseeWrapperViewer::PropheseeWrapperViewer() :
     nh_("~"),
-    it_(nh_),
     cd_window_name_("CD Events"),
-    gl_window_name_("GrayLevel Data"),
     display_acc_time_(5000),
     initialized_(false) {
     std::string camera_name("");
@@ -20,12 +18,10 @@ PropheseeWrapperViewer::PropheseeWrapperViewer() :
     // Load Parameters
     nh_.getParam("camera_name", camera_name);
     nh_.getParam("show_cd", show_cd_);
-    nh_.getParam("show_graylevels", show_graylevels_);
     nh_.getParam("display_accumulation_time", display_acc_time_);
 
     const std::string topic_cam_info         = "/prophesee/" + camera_name + "/camera_info";
     const std::string topic_cd_event_buffer  = "/prophesee/" + camera_name + "/cd_events_buffer";
-    const std::string topic_graylevel_buffer = "/prophesee/" + camera_name + "/graylevel_image";
 
     // Subscribe to camera info topic
     sub_cam_info_ = nh_.subscribe(topic_cam_info, 1, &PropheseeWrapperViewer::cameraInfoCallback, this);
@@ -35,10 +31,6 @@ PropheseeWrapperViewer::PropheseeWrapperViewer() :
         callback displayerCDCallback = boost::bind(&CDFrameGenerator::add_events, &cd_frame_generator_, _1);
         sub_cd_events_               = nh_.subscribe(topic_cd_event_buffer, 500, displayerCDCallback);
     }
-
-    // Subscribe to gray-level event buffer topic
-    if (show_graylevels_)
-        sub_gl_frame_ = it_.subscribe(topic_graylevel_buffer, 1, &PropheseeWrapperViewer::glFrameCallback, this);
 }
 
 PropheseeWrapperViewer::~PropheseeWrapperViewer() {
@@ -67,15 +59,6 @@ void PropheseeWrapperViewer::cameraInfoCallback(const sensor_msgs::CameraInfo::C
         init(msg->width, msg->height);
 }
 
-void PropheseeWrapperViewer::glFrameCallback(const sensor_msgs::ImageConstPtr &msg) {
-    if (!initialized_)
-        return;
-
-    try {
-        cv::imshow(gl_window_name_, cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::TYPE_8UC1)->image);
-    } catch (cv_bridge::Exception &e) { ROS_ERROR("cv_bridge exception: %s", e.what()); }
-}
-
 bool PropheseeWrapperViewer::init(const unsigned int &sensor_width, const unsigned int &sensor_height) {
     if (show_cd_) {
         // Define the display window for CD events
@@ -85,11 +68,6 @@ bool PropheseeWrapperViewer::init(const unsigned int &sensor_width, const unsign
         cd_frame_generator_.set_display_accumulation_time_us(display_acc_time_);
         // Start CD frame generator thread
         cd_frame_generator_.start();
-    }
-
-    if (show_graylevels_) {
-        // Define the display window for gray-level frame
-        create_window(gl_window_name_, sensor_width, sensor_height, 0, sensor_height + 50);
     }
 
     initialized_ = true;

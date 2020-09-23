@@ -47,11 +47,6 @@ private:
     /// @param msg : ROS message with the camera info
     void cameraInfoCallback(const sensor_msgs::CameraInfo::ConstPtr &msg);
 
-    /// \brief Callback triggered when data are received from gray-level frame topic
-    ///
-    /// @param msg ROS message with teh gray-level frame
-    void glFrameCallback(const sensor_msgs::ImageConstPtr &msg);
-
     /// \brief Initializes the frame generators and the displayers
     ///
     /// @param sensor_width : Width of the sensor
@@ -80,20 +75,11 @@ private:
     /// \brief Subscriber for CD events topic
     ros::Subscriber sub_cd_events_;
 
-    /// \brief Image Transport subscriber for gray-level frames
-    image_transport::Subscriber sub_gl_frame_;
-
-    /// \brief Used to subscribe to the gray-level frame topic
-    image_transport::ImageTransport it_;
-
     /// \brief Instance of CDFrameGenerator class that generates a frame from CD events
     CDFrameGenerator cd_frame_generator_;
 
     /// \brief Window name for visualizing CD events
     std::string cd_window_name_;
-
-    /// \brief Window name for visualizing gray-level frames
-    std::string gl_window_name_;
 
     /// \brief Display accumulation time
 
@@ -106,8 +92,6 @@ private:
     /// \brief  If visualizing CD events
     bool show_cd_ = true;
 
-    /// \brief If visualizing gray-level frames
-    bool show_graylevels_ = false;
 };
 
 #endif /* PROPHESEE_ROS_VIEWER_H_ */
