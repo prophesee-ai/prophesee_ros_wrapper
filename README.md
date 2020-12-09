@@ -25,7 +25,7 @@ First of all, install Metavision SDK following [these instructions](https://docs
 
 Then, compile the wrapper code:
 
-  * Clone the source code to your catkin workspace ( [create a workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace), if needed)
+  * Clone the source code to your catkin workspace ([create a workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace), if needed)
 
     ```
         cd catkin_ws/src
@@ -107,7 +107,7 @@ To publish data from RAW file to ROS topics and view the data:
 
 Note that before starting the publisher, you need to start the viewer node (like here) or ROS core.
 
-At the end of the RAW file, the publisher will stop on its own, but the viewer won't stop, so it's up to you to quite the viewer.
+At the end of the RAW file, the publisher will stop on its own, but the viewer won't stop, so it's up to you to quit the viewer.
 
 ### Recording data from RAW file to rosbag
 
