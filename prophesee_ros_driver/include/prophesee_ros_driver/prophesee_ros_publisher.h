@@ -73,7 +73,7 @@ private:
     /// \brief If showing CD events
     bool publish_cd_;
 
-    /// \brief Actvity Filter Temporal depth (configuration)
+    /// \brief Activity Filter Temporal depth (configuration)
     /// Desirable Temporal depth in micro seconds
     int activity_filter_temporal_depth_;
 

@@ -48,7 +48,7 @@ public:
     ///
     /// After this, you can call get_current_frame() whenever you want to have the
     /// most up to date CD frame to display
-    /// \return True if the thread started succesfully, false otherwise.
+    /// \return True if the thread started successfully, false otherwise.
     /// Also returns false, if the thread is already started.
     bool start();
 
@@ -130,7 +130,7 @@ private:
     // Image height
     int height_ = 0;
 
-    /// \brief State of the frame generator: initiaized or not
+    /// \brief State of the frame generator: initialized or not
     bool initialized_ = false;
 
     // ROS time of the last received event buffer
