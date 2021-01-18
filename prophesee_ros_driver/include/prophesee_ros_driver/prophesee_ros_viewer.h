@@ -40,7 +40,7 @@ public:
     bool isInitialized();
 
 private:
-    /// \brief Callback triggered when data are recieved from the camera info topic
+    /// \brief Callback triggered when data are received from the camera info topic
     ///
     /// It gets width and height of the sensor and calls init() function
     ///
