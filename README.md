@@ -4,7 +4,7 @@
 
 This metapackage contains ROS driver and messages for [Prophesee](https://www.prophesee.ai) event-based sensors.
 
-The aim of this metapackage is wrapping data access from event-based sensors from [Metavision SDK](https://docs.prophesee.ai/) software and publishing the data to ROS.
+The aim of this metapackage is wrapping data access from event-based sensors from [Metavision Open](https://docs.prophesee.ai/) software and publishing the data to ROS.
 
 The following packages and nodes are provided:
   * prophesee_ros_driver - ROS driver, including
@@ -14,14 +14,19 @@ The following packages and nodes are provided:
     * Event - contains an event from a Prophesee camera (uint16 x, uint16 y, ros::Time ts, bool polarity)
     * EventArray - contains a buffer of events (Event[] events)
 
-Supported Prophesee EVK:
+Supported cameras:
   * EVK Gen3
-  * other cameras supported by Metavision SDK software
-  
+  * other cameras supported by Metavision Open software
+
+## Requirements
+
+  * Ubuntu 20.04 or 18.04
+  * ROS Noetic or ROS Melodic
+  * Metavision Open v2.2.0
 
 ## Installation
 
-First of all, install Metavision SDK following [these instructions](https://docs.prophesee.ai/getting_started/installation/linux.html).
+First of all, compile Metavision Open.
 
 Then, compile the wrapper code:
 

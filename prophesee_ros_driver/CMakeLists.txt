@@ -6,13 +6,8 @@ add_compile_options(-std=c++14)
 
 
 execute_process(COMMAND lsb_release -cs OUTPUT_VARIABLE RELEASE_CODENAME OUTPUT_STRIP_TRAILING_WHITESPACE)
-if ("${RELEASE_CODENAME}" STREQUAL  "bionic")
-	message ("Ubuntu 18.04 found")
-	set(OpenCV_DIR /usr/share/OpenCV)
-elseif ("${RELEASE_CODENAME}" STREQUAL  "xenial")
-	message ("UBUNTU 16.04 found")
-	set(OpenCV_DIR /usr/local/share/OpenCV)
-endif ()
+
+find_package(OpenCV COMPONENTS highgui REQUIRED)
 
 find_package(catkin REQUIRED COMPONENTS
         OpenCV
@@ -55,7 +50,7 @@ add_executable(prophesee_ros_publisher
 
 target_link_libraries(
     prophesee_ros_publisher
-    metavision_sdk_driver
+    MetavisionSDK::driver
     ${catkin_LIBRARIES}
 )
 
@@ -73,7 +68,7 @@ add_executable(prophesee_ros_viewer
 
 target_link_libraries(
     prophesee_ros_viewer
-    metavision_sdk_driver
+    MetavisionSDK::driver
     ${catkin_LIBRARIES}
 )
 

@@ -6,6 +6,11 @@
 
 #include "prophesee_ros_viewer.h"
 
+#include <opencv2/highgui/highgui.hpp>
+#if CV_MAJOR_VERSION >= 4
+#include <opencv2/highgui/highgui_c.h>
+#endif
+
 typedef const boost::function<void(const prophesee_event_msgs::EventArray::ConstPtr &msgs)> callback;
 
 PropheseeWrapperViewer::PropheseeWrapperViewer() :
