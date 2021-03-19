@@ -22,8 +22,7 @@
 PropheseeWrapperPublisher::PropheseeWrapperPublisher() :
     nh_("~"),
     biases_file_(""),
-    raw_file_to_read_(""),
-    activity_filter_temporal_depth_(0) {
+    raw_file_to_read_("") {
     camera_name_ = "PropheseeCamera_optical_frame";
 
     // Load Parameters
@@ -31,7 +30,6 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher() :
     nh_.getParam("publish_cd", publish_cd_);
     nh_.getParam("bias_file", biases_file_);
     nh_.getParam("raw_file_to_read", raw_file_to_read_);
-    nh_.getParam("activity_filter_temporal_depth", activity_filter_temporal_depth_);
 
     const std::string topic_cam_info        = "/prophesee/" + camera_name_ + "/camera_info";
     const std::string topic_cd_event_buffer = "/prophesee/" + camera_name_ + "/cd_events_buffer";
@@ -53,27 +51,18 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher() :
     Metavision::CameraConfiguration config = camera_.get_camera_configuration();
     auto &geometry                        = camera_.geometry();
     ROS_INFO("[CONF] Width:%i, Height:%i", geometry.width(), geometry.height());
-    ROS_INFO("[CONF] Activity Filter Temporal depth: %d [microseconds]", this->activity_filter_temporal_depth_);
     ROS_INFO("[CONF] Serial number: %s", config.serial_number.c_str());
 
     // Publish camera info message
     cam_info_msg_.width           = geometry.width();
     cam_info_msg_.height          = geometry.height();
     cam_info_msg_.header.frame_id = "PropheseeCamera_optical_frame";
-
-    // Set the activity filter instance
-    if (activity_filter_temporal_depth_ > 0) {
-        activity_filter_.reset(new Metavision::ActivityNoiseFilterAlgorithm<>(
-            camera_.geometry().width(), camera_.geometry().height(), activity_filter_temporal_depth_));
-    }
 }
 
 PropheseeWrapperPublisher::~PropheseeWrapperPublisher() {
     camera_.stop();
 
     nh_.shutdown();
-
-    activity_filter_.reset();
 }
 
 bool PropheseeWrapperPublisher::openCamera() {
@@ -142,13 +131,8 @@ void PropheseeWrapperPublisher::publishCDEvents() {
                     /** Insert the events to the buffer **/
                     auto inserter = std::back_inserter(event_buffer_);
 
-                    if (activity_filter_temporal_depth_ > 0) {
-                        /** When there is activity filter **/
-                        activity_filter_->process(ev_begin, ev_end, inserter);
-                    } else {
-                        /** When there is not activity filter **/
-                        std::copy(ev_begin, ev_end, inserter);
-                    }
+                    /** When there is not activity filter **/
+                    std::copy(ev_begin, ev_end, inserter);
 
                     /** Get the last time stamp **/
                     event_buffer_current_time_.fromNSec(start_timestamp_.toNSec() + (ev_end - 1)->t * 1000.00);

@@ -10,9 +10,6 @@
     <!-- Instead of live camera, you can read data offline from raw file -->
     <param name="raw_file_to_read" value="" />
 
-    <!-- Activity filter temporal depth in microseconds -->
-    <param name="activity_filter_temporal_depth" value="0" />
-
   </node>
 
 </launch>
