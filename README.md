@@ -54,7 +54,7 @@ Then, compile the wrapper code:
 
 ## Getting Started
   
-### Publishing data from live camera
+### Publishing data from a live camera and listening them 
 
 To publish data from Prophesee camera to ROS topics:
 
@@ -66,15 +66,13 @@ The following topics will be published:
   * /prophesee/camera/camera_info - info about the camera
   * /prophesee/camera/cd_events_buffer - buffer of CD (Change Detection) events
 
-### Viewing data from ROS topics
-
-To visualize data from ROS topics:
+To listen data from ROS topics and visualize them:
 
   ```
         roslaunch prophesee_ros_driver prophesee_viewer.launch
   ```
 
-### Recording data from live camera to rosbag
+### Recording data from a live camera to rosbag
 
 To record data from live camera to rosbag:
   * Start the publisher:
@@ -89,7 +87,7 @@ To record data from live camera to rosbag:
         rosbag record -a
   ```
 
-### Publishing data from RAW file
+### Publishing data from a RAW file
 
 To publish data from RAW file to ROS topics and view the data:
   * Open the prophesee_publisher.launch file and set the path to your RAW file (in raw_file_to_read parameter)
@@ -114,7 +112,7 @@ Note that before starting the publisher, you need to start the viewer node (like
 
 At the end of the RAW file, the publisher will stop on its own, but the viewer won't stop, so it's up to you to quit the viewer.
 
-### Recording data from RAW file to rosbag
+### Recording data from a RAW file to rosbag
 
 To record data from RAW file to rosbag:
   * Open the prophesee_publisher.launch file and set the path to your RAW file (in raw_file_to_read parameter)
