@@ -26,7 +26,7 @@ Supported cameras:
 
 ## Installation
 
-First of all, compile [OpenEB](https://github.com/prophesee-ai/openeb).
+First of all, retrieve and compile [OpenEB](https://github.com/prophesee-ai/openeb).
 
 Then, compile the wrapper code:
 
