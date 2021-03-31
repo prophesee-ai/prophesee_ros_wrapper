@@ -4,7 +4,7 @@
 
 This metapackage contains ROS driver and messages for [Prophesee](https://www.prophesee.ai) event-based sensors.
 
-The aim of this metapackage is wrapping data access from event-based sensors from [Metavision Open](https://docs.prophesee.ai/) software and publishing the data to ROS.
+The aim of this metapackage is wrapping data access from event-based sensors using [OpenEB](https://github.com/prophesee-ai/openeb) and publishing the data to ROS.
 
 The following packages and nodes are provided:
   * prophesee_ros_driver - ROS driver, including
@@ -16,17 +16,17 @@ The following packages and nodes are provided:
 
 Supported cameras:
   * EVK Gen3
-  * other cameras supported by Metavision Open software
+  * other cameras supported by [OpenEB](https://github.com/prophesee-ai/openeb)
 
 ## Requirements
 
   * Ubuntu 20.04 or 18.04
   * ROS Noetic or ROS Melodic
-  * Metavision Open v2.2.0
+  * [OpenEB](https://github.com/prophesee-ai/openeb) v2.2.0
 
 ## Installation
 
-First of all, compile Metavision Open.
+First of all, compile [OpenEB](https://github.com/prophesee-ai/openeb).
 
 Then, compile the wrapper code:
 
@@ -90,7 +90,7 @@ To record data from live camera to rosbag:
 ### Publishing data from a RAW file
 
 To publish data from RAW file to ROS topics and view the data:
-  * Open the prophesee_publisher.launch file and set the path to your RAW file (in raw_file_to_read parameter)
+  * Update the prophesee_publisher.launch file to set the path to your RAW file (in raw_file_to_read parameter)
 
   ```
         rosed prophesee_ros_driver prophesee_publisher.launch
@@ -115,7 +115,7 @@ At the end of the RAW file, the publisher will stop on its own, but the viewer w
 ### Recording data from a RAW file to rosbag
 
 To record data from RAW file to rosbag:
-  * Open the prophesee_publisher.launch file and set the path to your RAW file (in raw_file_to_read parameter)
+  * Update the prophesee_publisher.launch file to set the path to your RAW file (in raw_file_to_read parameter)
 
   ```
         rosed prophesee_ros_driver prophesee_publisher.launch
