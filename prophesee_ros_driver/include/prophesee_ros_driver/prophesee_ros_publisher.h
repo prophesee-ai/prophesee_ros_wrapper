@@ -10,7 +10,6 @@
 #include <sensor_msgs/CameraInfo.h>
 
 #include <metavision/sdk/driver/camera.h>
-#include <metavision/sdk/cv/algorithms/activity_noise_filter_algorithm.h>
 
 /// \brief Main class for ROS publisher
 ///
@@ -54,9 +53,6 @@ private:
 
     /// \brief Message for publishing the camera info
     sensor_msgs::CameraInfo cam_info_msg_;
-
-    /// \brief Pointer for the Activity Filter Instance
-    std::shared_ptr<Metavision::ActivityNoiseFilterAlgorithm<>> activity_filter_;
 
     /// \brief Path to the file with the camera settings (biases)
     std::string biases_file_;

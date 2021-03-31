@@ -4,7 +4,7 @@
 
 This metapackage contains ROS driver and messages for [Prophesee](https://www.prophesee.ai) event-based sensors.
 
-The aim of this metapackage is wrapping data access from event-based sensors from [Metavision SDK](https://docs.prophesee.ai/) software and publishing the data to ROS.
+The aim of this metapackage is wrapping data access from event-based sensors using [OpenEB](https://github.com/prophesee-ai/openeb) and publishing the data to ROS.
 
 The following packages and nodes are provided:
   * prophesee_ros_driver - ROS driver, including
@@ -14,14 +14,19 @@ The following packages and nodes are provided:
     * Event - contains an event from a Prophesee camera (uint16 x, uint16 y, ros::Time ts, bool polarity)
     * EventArray - contains a buffer of events (Event[] events)
 
-Supported Prophesee EVK:
+Supported cameras:
   * EVK Gen3
-  * other cameras supported by Metavision SDK software
-  
+  * other cameras supported by [OpenEB](https://github.com/prophesee-ai/openeb)
+
+## Requirements
+
+  * Ubuntu 20.04 or 18.04
+  * ROS Noetic or ROS Melodic
+  * [OpenEB](https://github.com/prophesee-ai/openeb) v2.2.0
 
 ## Installation
 
-First of all, install Metavision SDK following [these instructions](https://docs.prophesee.ai/getting_started/installation/linux.html).
+First of all, compile [OpenEB](https://github.com/prophesee-ai/openeb).
 
 Then, compile the wrapper code:
 
@@ -49,7 +54,7 @@ Then, compile the wrapper code:
 
 ## Getting Started
   
-### Publishing data from live camera
+### Publishing data from a live camera and listening them 
 
 To publish data from Prophesee camera to ROS topics:
 
@@ -61,15 +66,13 @@ The following topics will be published:
   * /prophesee/camera/camera_info - info about the camera
   * /prophesee/camera/cd_events_buffer - buffer of CD (Change Detection) events
 
-### Viewing data from ROS topics
-
-To visualize data from ROS topics:
+To listen data from ROS topics and visualize them:
 
   ```
         roslaunch prophesee_ros_driver prophesee_viewer.launch
   ```
 
-### Recording data from live camera to rosbag
+### Recording data from a live camera to rosbag
 
 To record data from live camera to rosbag:
   * Start the publisher:
@@ -84,10 +87,10 @@ To record data from live camera to rosbag:
         rosbag record -a
   ```
 
-### Publishing data from RAW file
+### Publishing data from a RAW file
 
 To publish data from RAW file to ROS topics and view the data:
-  * Open the prophesee_publisher.launch file and set the path to your RAW file (in raw_file_to_read parameter)
+  * Update the prophesee_publisher.launch file to set the path to your RAW file (in raw_file_to_read parameter)
 
   ```
         rosed prophesee_ros_driver prophesee_publisher.launch
@@ -109,10 +112,10 @@ Note that before starting the publisher, you need to start the viewer node (like
 
 At the end of the RAW file, the publisher will stop on its own, but the viewer won't stop, so it's up to you to quit the viewer.
 
-### Recording data from RAW file to rosbag
+### Recording data from a RAW file to rosbag
 
 To record data from RAW file to rosbag:
-  * Open the prophesee_publisher.launch file and set the path to your RAW file (in raw_file_to_read parameter)
+  * Update the prophesee_publisher.launch file to set the path to your RAW file (in raw_file_to_read parameter)
 
   ```
         rosed prophesee_ros_driver prophesee_publisher.launch
