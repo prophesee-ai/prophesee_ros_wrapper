@@ -142,5 +142,5 @@ To record data from RAW file to rosbag:
 ## Contact
 The code is open to contributions, thus do not hesitate to propose pull requests or create/fix bug reports.
 In case of any issue, please add it here on GitHub. 
-For any other information contact us [here](https://www.prophesee.ai/contact-us/) 
+For any other information [contact us](https://www.prophesee.ai/contact-us/).
 
