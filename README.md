@@ -22,7 +22,7 @@ Supported cameras:
 
   * Ubuntu 20.04 or 18.04
   * ROS Noetic or ROS Melodic
-  * [OpenEB](https://github.com/prophesee-ai/openeb) v2.2.0
+  * [OpenEB](https://github.com/prophesee-ai/openeb) - starting from v2.2.0
 
 ## Installation
 
