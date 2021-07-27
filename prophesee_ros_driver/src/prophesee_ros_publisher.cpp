@@ -30,6 +30,7 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher() :
     nh_.getParam("publish_cd", publish_cd_);
     nh_.getParam("bias_file", biases_file_);
     nh_.getParam("raw_file_to_read", raw_file_to_read_);
+    event_delta_t_ = ros::Duration(nh_.param<double>("event_delta_t", 100.0e-6));
 
     const std::string topic_cam_info        = "/prophesee/" + camera_name_ + "/camera_info";
     const std::string topic_cd_event_buffer = "/prophesee/" + camera_name_ + "/cd_events_buffer";

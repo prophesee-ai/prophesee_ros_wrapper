@@ -10,6 +10,10 @@
     <!-- Instead of live camera, you can read data offline from raw file -->
     <param name="raw_file_to_read" value="" />
 
+    <!-- approximate time span in seconds for which events will
+	 be aggregated until a ROS message is generated. Defaults to
+	 100 usec -->
+    <param name="event_delta_t" value="0.000100" />
   </node>
 
 </launch>
