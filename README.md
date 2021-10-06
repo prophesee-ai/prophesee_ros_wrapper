@@ -96,6 +96,12 @@ To publish data from RAW file to ROS topics and view the data:
         rosed prophesee_ros_driver prophesee_publisher.launch
   ```
 
+  * Start the ROS core
+
+  ```
+        roscore
+  ```
+  
   * Start the viewer, at first:
 
   ```
