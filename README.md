@@ -14,7 +14,7 @@ The following packages and nodes are included:
     * Event - containing an event from a Prophesee camera (uint16 x, uint16 y, ros::Time ts, bool polarity)
     * EventArray - containing a buffer of events (Event[] events)
 
-Supported cameras/sensors:
+Supported [Prophesee sensors](https://docs.prophesee.ai/2.2.1/hw/evk/index.html) :
   * EVKV1 Gen3.0, Gen3.1, Gen4.0, Gen4.1
   * EVKV2 Gen4
   * EVKV3 Gen31, Gen41
