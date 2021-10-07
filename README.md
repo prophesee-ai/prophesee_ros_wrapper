@@ -15,7 +15,7 @@ The following packages and nodes are included:
     * EventArray - containing a buffer of events (Event[] events)
 
 Supported cameras/sensors:
-  * EVKV1 Gen3.1, Gen4.0, Gen4.1
+  * EVKV1 Gen3.0, Gen3.1, Gen4.0, Gen4.1
   * EVKV2 Gen4
   * EVKV3 Gen31, Gen41
 
