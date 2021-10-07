@@ -2,19 +2,19 @@
 
 ![Event-based vision by Prophesee](event-based_vision_PROPHESEE.png)
 
-This metapackage contains ROS driver and messages for [Prophesee](https://www.prophesee.ai) event-based sensors.
+This is a metapackage containing ROS wrapper and messages for [Prophesee](https://www.prophesee.ai) event-based sensors.
 
 The aim of this metapackage is wrapping data access from event-based sensors using [OpenEB](https://github.com/prophesee-ai/openeb) and publishing the data to ROS.
 
-The following packages and nodes are provided:
-  * prophesee_ros_driver - ROS driver, including
+The following packages and nodes are included:
+  * prophesee_ros_driver - main ROS wrapper, including
     * prophesee_ros_publisher - publishing data from Prophesee sensor to ROS topics
     * prophesee_ros_viewer - listening data from ROS topics and visualizing them on a screen
-  * prophesee_event_msgs - Prophesee messages:
-    * Event - contains an event from a Prophesee camera (uint16 x, uint16 y, ros::Time ts, bool polarity)
-    * EventArray - contains a buffer of events (Event[] events)
+  * prophesee_event_msgs - Prophesee messages, including
+    * Event - containing an event from a Prophesee camera (uint16 x, uint16 y, ros::Time ts, bool polarity)
+    * EventArray - containing a buffer of events (Event[] events)
 
-Supported cameras:
+Supported cameras/sensors:
   * EVKV1 Gen3.1, Gen4.0, Gen4.1
   * EVKV2 Gen4
   * EVKV3 Gen31, Gen41
@@ -28,6 +28,8 @@ Supported cameras:
 ## Installation
 
 First of all, retrieve and compile [OpenEB](https://github.com/prophesee-ai/openeb).
+
+If you want to use the ROS wraper with live Prophesee cameras, then install Prophesee plugins as described in [Prophesee documentation](https://docs.prophesee.ai/2.2.1/installation/linux_open_from_source.html#chapter-installation-linux-open-from-source).
 
 Then, compile the wrapper code:
 
@@ -57,15 +59,16 @@ Then, compile the wrapper code:
   
 ### Publishing data from a live camera and listening them 
 
-To publish data from Prophesee camera to ROS topics:
+To publish data from Prophesee camera to ROS topics, run:
 
   ```
         roslaunch prophesee_ros_driver prophesee_publisher.launch
   ```
 
 The following topics will be published:
-  * /prophesee/camera/camera_info - info about the camera
+
   * /prophesee/camera/cd_events_buffer - buffer of CD (Change Detection) events
+  * /prophesee/camera/camera_info - information about the camera
 
 To listen data from ROS topics and visualize them:
 
@@ -91,7 +94,8 @@ To record data from live camera to rosbag:
 ### Publishing data from a RAW file
 
 To publish data from RAW file to ROS topics and view the data:
-  * Update the prophesee_publisher.launch file to set the path to your RAW file (in raw_file_to_read parameter)
+
+  * Update the prophesee_publisher.launch file to set the path to your RAW file (i.e raw_file_to_read parameter)
 
   ```
         rosed prophesee_ros_driver prophesee_publisher.launch
@@ -103,7 +107,7 @@ To publish data from RAW file to ROS topics and view the data:
         roscore
   ```
   
-  * Start the viewer, at first:
+  * Start the viewer, at first to be sure to not miss any data:
 
   ```
         roslaunch prophesee_ros_driver prophesee_viewer.launch
@@ -115,13 +119,12 @@ To publish data from RAW file to ROS topics and view the data:
         roslaunch prophesee_ros_driver prophesee_publisher.launch
   ```
 
-Note that before starting the publisher, you need to start the viewer node (like here) or ROS core.
-
 At the end of the RAW file, the publisher will stop on its own, but the viewer won't stop, so it's up to you to quit the viewer.
 
 ### Recording data from a RAW file to rosbag
 
 To record data from RAW file to rosbag:
+
   * Update the prophesee_publisher.launch file to set the path to your RAW file (in raw_file_to_read parameter)
 
   ```
