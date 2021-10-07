@@ -15,9 +15,9 @@ The following packages and nodes are provided:
     * EventArray - contains a buffer of events (Event[] events)
 
 Supported cameras:
-  * EVKV1 Gen3, Gen4
+  * EVKV1 Gen3.1, Gen4.0, Gen4.1
   * EVKV2 Gen4
-  * other cameras supported by [OpenEB](https://github.com/prophesee-ai/openeb)
+  * EVKV3 Gen31, Gen41
 
 ## Requirements
 
