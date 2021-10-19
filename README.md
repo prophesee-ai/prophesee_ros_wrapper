@@ -14,10 +14,10 @@ The following packages and nodes are included:
     * Event - containing an event from a Prophesee camera (uint16 x, uint16 y, ros::Time ts, bool polarity)
     * EventArray - containing a buffer of events (Event[] events)
 
-Supported [Prophesee sensors](https://docs.prophesee.ai/2.2.1/hw/evk/index.html) :
+Supported [Prophesee Evaluation Kit Cameras](https://docs.prophesee.ai/stable/hw/evk/index.html) :
   * EVKV1 Gen3.0, Gen3.1, Gen4.0, Gen4.1
-  * EVKV2 Gen4
-  * EVKV3 Gen31, Gen41
+  * EVKV2 Gen4.1
+  * EVKV3 Gen3.1, Gen4.1
 
 ## Requirements
 
@@ -29,7 +29,7 @@ Supported [Prophesee sensors](https://docs.prophesee.ai/2.2.1/hw/evk/index.html)
 
 First of all, retrieve and compile [OpenEB](https://github.com/prophesee-ai/openeb).
 
-If you want to use the ROS wraper with live Prophesee cameras, then install Prophesee plugins as described in [Prophesee documentation](https://docs.prophesee.ai/2.2.1/installation/linux_open_from_source.html#chapter-installation-linux-open-from-source).
+If you want to use the ROS wrapper with live Prophesee cameras, then install Prophesee plugins as described in [Prophesee documentation](https://docs.prophesee.ai/stable/installation/linux_open_from_source.html).
 
 Then, compile the wrapper code:
 
@@ -95,7 +95,7 @@ To record data from live camera to rosbag:
 
 To publish data from RAW file to ROS topics and view the data:
 
-  * Update the prophesee_publisher.launch file to set the path to your RAW file (i.e raw_file_to_read parameter)
+  * Update the prophesee_publisher.launch file to set the path to your RAW file (i.e. raw_file_to_read parameter)
 
   ```
         rosed prophesee_ros_driver prophesee_publisher.launch
@@ -153,4 +153,3 @@ To record data from RAW file to rosbag:
 The code is open to contributions, thus do not hesitate to propose pull requests or create/fix bug reports.
 In case of any issue, please add it here on GitHub. 
 For any other information [contact us](https://www.prophesee.ai/contact-us/).
-
