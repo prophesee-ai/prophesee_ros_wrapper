@@ -2,12 +2,12 @@
 
 ![Event-based vision by Prophesee](event-based_vision_PROPHESEE.png)
 
-This is a metapackage containing ROS wrapper and messages for [Prophesee](https://www.prophesee.ai) event-based sensors.
+This is a metapackage containing ROS wrapper and messages for [Prophesee event-based sensors](https://www.prophesee.ai/event-based-sensor-packaged).
 
-The aim of this metapackage is wrapping data access from event-based sensors using [OpenEB](https://github.com/prophesee-ai/openeb) and publishing the data to ROS.
+The aim of this metapackage is wrapping data access from event-based sensors using [OpenEB](https://github.com/prophesee-ai/openeb) software and publishing the event-based data to ROS.
 
 The following packages and nodes are included:
-  * prophesee_ros_driver - main ROS wrapper, including
+  * prophesee_ros_driver - ROS wrapper, including
     * prophesee_ros_publisher - publishing data from Prophesee sensor to ROS topics
     * prophesee_ros_viewer - listening data from ROS topics and visualizing them on a screen
   * prophesee_event_msgs - Prophesee messages, including
@@ -16,8 +16,9 @@ The following packages and nodes are included:
 
 Supported [Prophesee Evaluation Kit Cameras](https://docs.prophesee.ai/stable/hw/evk/index.html) :
   * EVKV1 Gen3.0, Gen3.1, Gen4.0, Gen4.1
-  * EVKV2 Gen4.1
+  * EVKV2 Gen4.0, Gen4.1
   * EVKV3 Gen3.1, Gen4.1
+  * EVKV4 IMX636ES
 
 ## Requirements
 
