@@ -2,17 +2,17 @@
 
 ![Event-based vision by Prophesee](event-based_vision_PROPHESEE.png)
 
-This is a metapackage containing ROS wrapper and messages for [Prophesee event-based sensors](https://www.prophesee.ai/event-based-sensor-packaged).
+The aim of this metapackage is wrapping event-based data from [Prophesee sensors](https://www.prophesee.ai/event-based-sensor-packaged) using [OpenEB](https://github.com/prophesee-ai/openeb) software and publishing the event-based data to ROS.
 
-The aim of this metapackage is wrapping data access from event-based sensors using [OpenEB](https://github.com/prophesee-ai/openeb) software and publishing the event-based data to ROS.
+This metapackage contains ROS wrapper (prophesee_ros_driver) and messages (prophesee_event_msgs) for Prophesee sensors.
 
-The following packages and nodes are included:
-  * prophesee_ros_driver - ROS wrapper, including
-    * prophesee_ros_publisher - publishing data from Prophesee sensor to ROS topics
-    * prophesee_ros_viewer - listening data from ROS topics and visualizing them on a screen
-  * prophesee_event_msgs - Prophesee messages, including
-    * Event - containing an event from a Prophesee camera (uint16 x, uint16 y, ros::Time ts, bool polarity)
-    * EventArray - containing a buffer of events (Event[] events)
+prophesee_ros_driver is a ROS wrapper including the following nodes:
+  * prophesee_ros_publisher - publishing data from Prophesee sensor to ROS topics
+  * prophesee_ros_viewer - listening data from ROS topics and visualizing them on a screen
+
+prophesee_event_msgs package contains ROS message types for Prophesee event-based data, including:
+  * Event - an event from a Prophesee camera (uint16 x, uint16 y, ros::Time ts, bool polarity)
+  * EventArray - a buffer of events (Event[] events)
 
 Supported [Prophesee Evaluation Kit Cameras](https://docs.prophesee.ai/stable/hw/evk/index.html) :
   * EVKV1 Gen3.0, Gen3.1, Gen4.0, Gen4.1
@@ -30,9 +30,9 @@ Supported [Prophesee Evaluation Kit Cameras](https://docs.prophesee.ai/stable/hw
 
 First of all, retrieve and compile [OpenEB](https://github.com/prophesee-ai/openeb).
 
-If you want to use the ROS wrapper with live Prophesee cameras, then install Prophesee plugins as described in [Prophesee documentation](https://docs.prophesee.ai/stable/installation/linux_open_from_source.html).
+Install a plugin for your camera (plugins for Prophesee cameras are included in OpenEB starting from v3.0.0.
 
-Then, compile the wrapper code:
+Then, compile the package:
 
   * Clone the source code to your catkin workspace ([create a workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace), if needed)
 
@@ -58,7 +58,7 @@ Then, compile the wrapper code:
 
 ## Getting Started
   
-### Publishing data from a live camera and listening them 
+### Publishing data from a camera and listening them 
 
 To publish data from Prophesee camera to ROS topics, run:
 
