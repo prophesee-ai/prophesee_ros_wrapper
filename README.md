@@ -15,8 +15,8 @@ prophesee_event_msgs package contains ROS message types for Prophesee event-base
   * EventArray - a buffer of events (Event[] events)
 
 Supported [Prophesee Evaluation Kit Cameras](https://docs.prophesee.ai/stable/hw/evk/index.html) :
-  * EVKV1 Gen3.0, Gen3.1, Gen4.0, Gen4.1
-  * EVKV2 Gen4.0, Gen4.1
+  * EVKV1 Gen3.0, Gen3.1, Gen4.1
+  * EVKV2 Gen4.1
   * EVKV3 Gen3.1, Gen4.1
   * EVKV4 IMX636ES
 
@@ -32,7 +32,7 @@ First of all, retrieve and compile [OpenEB](https://github.com/prophesee-ai/open
 
 Install a plugin for your camera (plugins for Prophesee cameras are included in OpenEB starting from v3.0.0.
 
-Then, compile the package:
+Then, compile the packages:
 
   * Clone the source code to your catkin workspace ([create a workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace), if needed)
 
