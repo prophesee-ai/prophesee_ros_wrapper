@@ -63,7 +63,7 @@ private:
     /// \brief Camera name in string format
     std::string camera_name_;
 
-    /// \brief Wall time stamps
+    /// \brief Wall timestamps
     ros::Time start_timestamp_, last_timestamp_;
 
     /// \brief If showing CD events
@@ -77,7 +77,7 @@ private:
     /// Time step for packaging events in an array
     ros::Duration event_delta_t_;
 
-    /// \brief Event buffer time stamps
+    /// \brief Event buffer timestamps
     ros::Time event_buffer_start_time_, event_buffer_current_time_;
 
     /// \brief  Mean gravity value at Earth surface [m/s^2]
