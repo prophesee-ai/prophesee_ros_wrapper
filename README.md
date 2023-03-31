@@ -15,22 +15,19 @@ prophesee_event_msgs package contains ROS message types for Prophesee event-base
   * EventArray - a buffer of events (Event[] events)
 
 Supported [Prophesee Evaluation Kit Cameras](https://docs.prophesee.ai/stable/hw/evk/index.html) :
-  * EVKV1 Gen3.0, Gen3.1, Gen4.1
   * EVKV2 Gen4.1
   * EVKV3 Gen3.1, Gen4.1
-  * EVKV4 IMX636ES
+  * EVKV4 IMX636
 
 ## Requirements
 
-  * Ubuntu 20.04 or 18.04
+  * Ubuntu 20.04 or 22.04
   * ROS Noetic or ROS Melodic
   * [OpenEB](https://github.com/prophesee-ai/openeb) - starting from v2.2.0
 
 ## Installation
 
-First of all, retrieve and compile [OpenEB](https://github.com/prophesee-ai/openeb).
-
-Install a plugin for your camera (plugins for Prophesee cameras are included in OpenEB starting from v3.0.0.
+First, retrieve and compile [OpenEB](https://github.com/prophesee-ai/openeb).
 
 Then, compile the packages:
 
@@ -58,7 +55,7 @@ Then, compile the packages:
 
 ## Getting Started
   
-### Publishing data from a camera and listening them 
+### Publishing data from a camera and listening to them 
 
 To publish data from Prophesee camera to ROS topics, run:
 
@@ -96,7 +93,7 @@ To record data from live camera to rosbag:
 
 To publish data from RAW file to ROS topics and view the data:
 
-  * Update the prophesee_publisher.launch file to set the path to your RAW file (i.e. raw_file_to_read parameter)
+  * Update the prophesee_publisher.launch file to set the path to your RAW file (in `raw_file_to_read` parameter)
 
   ```
         rosed prophesee_ros_driver prophesee_publisher.launch
@@ -126,7 +123,7 @@ At the end of the RAW file, the publisher will stop on its own, but the viewer w
 
 To record data from RAW file to rosbag:
 
-  * Update the prophesee_publisher.launch file to set the path to your RAW file (in raw_file_to_read parameter)
+  * Update the prophesee_publisher.launch file to set the path to your RAW file (in `raw_file_to_read` parameter)
 
   ```
         rosed prophesee_ros_driver prophesee_publisher.launch
@@ -150,7 +147,14 @@ To record data from RAW file to rosbag:
         roslaunch prophesee_ros_driver prophesee_publisher.launch
   ```
 
+## Going Further
+The ROS wrapper we propose in this repo is a minimal example to get you started.
+There are multiple ways to enhance it in terms of features and performance.
+The code is open to contributions, thus do not hesitate to [propose pull requests](https://github.com/prophesee-ai/prophesee_ros_wrapper/pulls).
+
+We also recommend you to check the [metavision_ros_driver repo from berndpfrommer](https://github.com/berndpfrommer/metavision_ros_driver)
+that offers a ROS driver for event-based cameras with some speed and features enhancements. 
+
 ## Contact
-The code is open to contributions, thus do not hesitate to propose pull requests or create/fix bug reports.
-In case of any issue, please add it here on GitHub. 
+In case of any issue, please [raise an issue here on GitHub](https://github.com/prophesee-ai/prophesee_ros_wrapper/issues). 
 For any other information [contact us](https://www.prophesee.ai/contact-us/).

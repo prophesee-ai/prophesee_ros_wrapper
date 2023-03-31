@@ -123,7 +123,7 @@ void PropheseeWrapperPublisher::publishCDEvents() {
                     // Get the current time
                     event_buffer_current_time_.fromNSec(start_timestamp_.toNSec() + (ev_begin->t * 1000.00));
 
-                    /** In case the buffer is empty we set the starting time stamp **/
+                    /** In case the buffer is empty we set the starting timestamp **/
                     if (event_buffer_.empty()) {
                         // Get starting time
                         event_buffer_start_time_ = event_buffer_current_time_;
@@ -135,7 +135,7 @@ void PropheseeWrapperPublisher::publishCDEvents() {
                     /** When there is not activity filter **/
                     std::copy(ev_begin, ev_end, inserter);
 
-                    /** Get the last time stamp **/
+                    /** Get the last timestamp **/
                     event_buffer_current_time_.fromNSec(start_timestamp_.toNSec() + (ev_end - 1)->t * 1000.00);
                 }
 
@@ -165,7 +165,7 @@ void PropheseeWrapperPublisher::publishCDEvents() {
                     // Publish the message
                     pub_cd_events_.publish(event_buffer_msg);
 
-                    // Clean the buffer for the next itteration
+                    // Clean the buffer for the next iteration
                     event_buffer_.clear();
 
                     ROS_DEBUG("CD data available, buffer size: %d at time: %lui",
