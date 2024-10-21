@@ -34,21 +34,21 @@ Then, compile the packages:
   * Clone the source code to your catkin workspace ([create a workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace), if needed)
 
     ```
-        cd catkin_ws/src
-        git clone https://github.com/prophesee-ai/prophesee_ros_wrapper.git
-        cd ..
+    cd catkin_ws/src
+    git clone https://github.com/prophesee-ai/prophesee_ros_wrapper.git
+    cd ..
     ```
 
   * Compile
 
     ```
-        catkin_make
+    catkin_make
     ```
 
   * Source the workspace
 
     ```
-        source ~/catkin_ws/devel/setup.bash
+    source ~/catkin_ws/devel/setup.bash
     ```
   
   
