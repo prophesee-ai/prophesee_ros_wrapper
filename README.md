@@ -59,9 +59,9 @@ Then, compile the packages:
 
 To publish data from Prophesee camera to ROS topics, run:
 
-  ```
-        roslaunch prophesee_ros_driver prophesee_publisher.launch
-  ```
+```
+roslaunch prophesee_ros_driver prophesee_publisher.launch
+```
 
 The following topics will be published:
 
@@ -70,9 +70,9 @@ The following topics will be published:
 
 To listen data from ROS topics and visualize them:
 
-  ```
-        roslaunch prophesee_ros_driver prophesee_viewer.launch
-  ```
+```
+roslaunch prophesee_ros_driver prophesee_viewer.launch
+```
 
 ### Recording data from a live camera to rosbag
 
@@ -80,13 +80,13 @@ To record data from live camera to rosbag:
   * Start the publisher:
 
   ```
-        roslaunch prophesee_ros_driver prophesee_publisher.launch
+  roslaunch prophesee_ros_driver prophesee_publisher.launch
   ```
 
   * Start rosbag recording (choose the topics to record or record all available topics):
 
   ```
-        rosbag record -a
+  rosbag record -a
   ```
 
 ### Publishing data from a RAW file
@@ -96,25 +96,25 @@ To publish data from RAW file to ROS topics and view the data:
   * Update the prophesee_publisher.launch file to set the path to your RAW file (in `raw_file_to_read` parameter)
 
   ```
-        rosed prophesee_ros_driver prophesee_publisher.launch
+  rosed prophesee_ros_driver prophesee_publisher.launch
   ```
 
   * Start the ROS core
 
   ```
-        roscore
+  roscore
   ```
   
   * Start the viewer, at first to be sure to not miss any data:
 
   ```
-        roslaunch prophesee_ros_driver prophesee_viewer.launch
+  roslaunch prophesee_ros_driver prophesee_viewer.launch
   ```
 
   * Start the publisher:
 
   ```
-        roslaunch prophesee_ros_driver prophesee_publisher.launch
+  roslaunch prophesee_ros_driver prophesee_publisher.launch
   ```
 
 At the end of the RAW file, the publisher will stop on its own, but the viewer won't stop, so it's up to you to quit the viewer.
@@ -126,25 +126,25 @@ To record data from RAW file to rosbag:
   * Update the prophesee_publisher.launch file to set the path to your RAW file (in `raw_file_to_read` parameter)
 
   ```
-        rosed prophesee_ros_driver prophesee_publisher.launch
+  rosed prophesee_ros_driver prophesee_publisher.launch
   ```
 
   * Start the ROS core
 
   ```
-        roscore
+  roscore
   ```
 
   * Start rosbag recording (choose the topics to record or record all available topics):
 
   ```
-        rosbag record -a
+  rosbag record -a
   ```
 
   * Start the publisher:
 
   ```
-        roslaunch prophesee_ros_driver prophesee_publisher.launch
+  roslaunch prophesee_ros_driver prophesee_publisher.launch
   ```
 
 ## Going Further
