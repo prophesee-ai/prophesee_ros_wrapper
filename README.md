@@ -15,15 +15,15 @@ prophesee_event_msgs package contains ROS message types for Prophesee event-base
   * EventArray - a buffer of events (Event[] events)
 
 Supported [Prophesee Evaluation Kit Cameras](https://docs.prophesee.ai/stable/hw/evk/index.html) :
-  * EVKV2 Gen4.1
-  * EVKV3 Gen3.1, Gen4.1
-  * EVKV4 IMX636
+  * EVKV2 - HD
+  * EVKV3 - VGA/320/HD
+  * EVKV4 - HD
 
 ## Requirements
 
-  * Ubuntu 20.04 or 22.04
-  * ROS Noetic or ROS Melodic
-  * [OpenEB](https://github.com/prophesee-ai/openeb) - starting from v2.2.0
+  * Ubuntu 20.04, 22.04 or 24.04 64-bit
+  * ROS Noetic
+  * [OpenEB](https://github.com/prophesee-ai/openeb)
 
 ## Installation
 

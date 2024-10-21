@@ -9,7 +9,7 @@
 
 #include <sensor_msgs/CameraInfo.h>
 
-#include <metavision/sdk/driver/camera.h>
+#include <metavision/sdk/stream/camera.h>
 
 /// \brief Main class for ROS publisher
 ///

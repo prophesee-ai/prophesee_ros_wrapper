@@ -14,6 +14,7 @@
 
 #include <prophesee_event_msgs/Event.h>
 #include <prophesee_event_msgs/EventArray.h>
+#include <metavision/hal/facilities/i_ll_biases.h>
 
 #include "prophesee_ros_publisher.h"
 
@@ -50,13 +51,13 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher() :
 
     // Get the sensor config
     Metavision::CameraConfiguration config = camera_.get_camera_configuration();
-    auto &geometry                        = camera_.geometry();
-    ROS_INFO("[CONF] Width:%i, Height:%i", geometry.width(), geometry.height());
+    auto &geometry                         = camera_.geometry();
+    ROS_INFO("[CONF] Width:%i, Height:%i", geometry.get_width(), geometry.get_height());
     ROS_INFO("[CONF] Serial number: %s", config.serial_number.c_str());
 
     // Publish camera info message
-    cam_info_msg_.width           = geometry.width();
-    cam_info_msg_.height          = geometry.height();
+    cam_info_msg_.width           = geometry.get_width();
+    cam_info_msg_.height          = geometry.get_height();
     cam_info_msg_.header.frame_id = "PropheseeCamera_optical_frame";
 }
 
@@ -76,7 +77,7 @@ bool PropheseeWrapperPublisher::openCamera() {
 
             if (!biases_file_.empty()) {
                 ROS_INFO("[CONF] Loading bias file: %s", biases_file_.c_str());
-                camera_.biases().set_from_file(biases_file_);
+                camera_.get_facility<Metavision::I_LL_Biases>().load_from_file(biases_file_);
             }
         } else {
             camera_ = Metavision::Camera::from_file(raw_file_to_read_);
@@ -145,8 +146,8 @@ void PropheseeWrapperPublisher::publishCDEvents() {
 
                     // Sensor geometry in header of the message
                     event_buffer_msg.header.stamp = event_buffer_current_time_;
-                    event_buffer_msg.height       = camera_.geometry().height();
-                    event_buffer_msg.width        = camera_.geometry().width();
+                    event_buffer_msg.height       = camera_.geometry().get_height();
+                    event_buffer_msg.width        = camera_.geometry().get_width();
 
                     /** Set the buffer size for the msg **/
                     event_buffer_msg.events.resize(event_buffer_.size());
