@@ -52,6 +52,7 @@ target_link_libraries(
     prophesee_ros_publisher
     MetavisionSDK::stream
     ${catkin_LIBRARIES}
+    curl
 )
 
 add_dependencies(
@@ -70,10 +71,12 @@ target_link_libraries(
     prophesee_ros_viewer
     MetavisionSDK::stream
     ${catkin_LIBRARIES}
+    curl
 )
 
 add_dependencies(
     prophesee_ros_viewer
     prophesee_event_msgs_generate_messages_cpp
     ${catkin_EXPORTED_TARGETS}
+    curl
 )
