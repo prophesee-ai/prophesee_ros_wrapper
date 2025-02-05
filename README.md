@@ -23,6 +23,8 @@ Supported [Prophesee Evaluation Kit Cameras](https://docs.prophesee.ai/stable/hw
 
   * Ubuntu 20.04, 22.04 or 24.04 64-bit
   * ROS Noetic
+  * curl (`sudo apt install curl`)
+    * On Ubuntu 22 and 24, you also need to install libcurl4-openssl-dev by running `sudo apt install libcurl4-openssl-dev`  
   * [OpenEB](https://github.com/prophesee-ai/openeb)
 
 ## Installation
